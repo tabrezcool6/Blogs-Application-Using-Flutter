@@ -1,3 +1,5 @@
+import 'package:blogs_app/core/theme/theme.dart';
+import 'package:blogs_app/features/auth/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,11 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Blogs Application using SOLID Principles and Clean Architecture',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(),
+      theme: AppTheme.darkThemeMode,
+      home: const LoginPage(),
     );
   }
 }
