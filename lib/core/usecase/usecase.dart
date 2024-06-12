@@ -5,5 +5,5 @@ import 'package:fpdart/fpdart.dart';
 // every use case has just one function, because it needs to do one single task
 // Expose the high level functionaluty of any process
 abstract interface class UseCase<SuccessType, Params> {
-  Future<Either<Failure, SuccessType>> callFunc(Params params);
+  Future<Either<Failure, SuccessType>> call(Params params);
 }

@@ -12,7 +12,7 @@ class UserSignUp implements UseCase<String, UserSignUpParams> {
   UserSignUp(this.authRepository);
 
   @override
-  Future<Either<Failure, String>> callFunc(UserSignUpParams params) async {
+  Future<Either<Failure, String>> call(UserSignUpParams params) async {
     // calling signup function written in the repository
     return await authRepository.signUp(
       name: params.name,
