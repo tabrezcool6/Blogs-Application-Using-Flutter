@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
+  // deafult method to call bindings and future methods
   WidgetsFlutterBinding.ensureInitialized();
 
+// initializing the SUPABASE Database and also Server
+// to do so we require a "Project URL" and a "Anon Key" which is provided by the project created in the supabase
   final subapase = await Supabase.initialize(
     url: Keys.supabaseProjectUrl,
     anonKey: Keys.supabaseAnonKey,
