@@ -1,4 +1,5 @@
 import 'package:blogs_app/core/error/exceptions.dart';
+import 'package:blogs_app/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 // import 'package:fpdart/fpdart.dart';
 
@@ -7,7 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 // so that when ever we shift to other database, only this funtion must bear the changes and not other
 // this interface retunrs a STRING
 abstract interface class AuthSupabaseDataSource {
-  Future<String> signUp({
+  Future<UserModel> signUp({
     required String name,
     required String email,
     required String password,
@@ -38,7 +39,7 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
 
   // User signUp method in supabase server
   @override
-  Future<String> signUp({
+  Future<UserModel> signUp({
     required String name,
     required String email,
     required String password,
@@ -58,7 +59,7 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
       }
 
       // return USER ID on success server connection
-      return response.user!.id;
+      return UserModel.fromJson(response.user!.toJson());
     } catch (e) {
       // throw any other exception
       throw ServerExceptions(e.toString());

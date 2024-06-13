@@ -1,18 +1,19 @@
 import 'package:blogs_app/core/error/failures.dart';
 import 'package:blogs_app/core/usecase/usecase.dart';
+import 'package:blogs_app/features/auth/domain/entities/user.dart';
 import 'package:blogs_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
 // TODO: STEP 8 - User Sign Up usecase
 
-class UserSignUp implements UseCase<String, UserSignUpParams> {
+class UserSignUp implements UseCase<User, UserSignUpParams> {
   // accessing "Auth Repository" a constructor
   // thats beacuse we donot want "User Sign Up" Use case to have a dependency on the "Auth Repository"
   final AuthRepository authRepository;
   UserSignUp(this.authRepository);
 
   @override
-  Future<Either<Failure, String>> call(UserSignUpParams params) async {
+  Future<Either<Failure, User>> call(UserSignUpParams params) async {
     // calling signup function written in the repository
     return await authRepository.signUp(
       name: params.name,

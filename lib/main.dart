@@ -12,16 +12,7 @@ void main() async {
   // initialize dependencies
   await initDependencies();
 
-  runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => serviceLocator<AuthBloc>(),
-        ),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -29,19 +20,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // MultiBlocProvider(
-        //   providers: [
-        //     BlocProvider(
-        //       create: (_) => serviceLocator<AuthBloc>(),
-        //     ),
-        //   ],
-        // child:
-        MaterialApp(
-      title: 'Blogs Application using SOLID Principles and Clean Architecture',
-      theme: AppTheme.darkThemeMode,
-      home: const LoginPage(),
-      // ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => serviceLocator<AuthBloc>(),
+        ),
+      ],
+      child: MaterialApp(
+        title:
+            'Blogs Application using SOLID Principles and Clean Architecture',
+        theme: AppTheme.darkThemeMode,
+        home: const LoginPage(),
+      ),
     );
   }
 }

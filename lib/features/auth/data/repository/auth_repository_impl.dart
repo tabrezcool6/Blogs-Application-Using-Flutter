@@ -1,6 +1,7 @@
 import 'package:blogs_app/core/error/exceptions.dart';
 import 'package:blogs_app/core/error/failures.dart';
 import 'package:blogs_app/features/auth/data/datasources/auth_supabase_data_source.dart';
+import 'package:blogs_app/features/auth/domain/entities/user.dart';
 import 'package:blogs_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -25,21 +26,21 @@ class AuthRepositoryImplementation implements AuthRepository {
 
   // "AuthRepositoryImplementation" sign up class which is implemented from the "AuthRepository" class
   @override
-  Future<Either<Failure, String>> signUp({
+  Future<Either<Failure, User>> signUp({
     required String name,
     required String email,
     required String password,
   }) async {
     try {
       // passing parameters to the signup class
-      final userId = await authSupabaseDataSource.signUp(
+      final user = await authSupabaseDataSource.signUp(
         name: name,
         email: email,
         password: password,
       );
       // fp_dart standard procedure or syntax
       // if result is success, use success param within right
-      return right(userId);
+      return right(user);
     } on ServerExceptions catch (e) {
       // if result is failure, use failure param within left
       return left(Failure(e.message));
