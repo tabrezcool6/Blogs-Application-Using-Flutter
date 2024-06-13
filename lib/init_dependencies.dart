@@ -2,6 +2,7 @@ import 'package:blogs_app/core/keys/app_keys.dart';
 import 'package:blogs_app/features/auth/data/datasources/auth_supabase_data_source.dart';
 import 'package:blogs_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:blogs_app/features/auth/domain/repository/auth_repository.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_in.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -47,10 +48,18 @@ void _initAuth() {
     ),
   );
 
+  // registering "UserSignIn" Dependency
+  serviceLocator.registerFactory(
+    () => UserSignIn(
+      serviceLocator(),
+    ),
+  );
+
   // registering "UserSignUp" Dependency
   serviceLocator.registerLazySingleton(
     () => AuthBloc(
       userSignUp: serviceLocator(),
+      userSignIn: serviceLocator(),
     ),
   );
 }

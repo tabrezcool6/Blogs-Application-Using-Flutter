@@ -14,13 +14,13 @@ abstract interface class AuthSupabaseDataSource {
     required String password,
   });
 
-  Future<String> login({
+  Future<UserModel> login({
     required String email,
     required String password,
   });
 }
 
-// TODO: STEP 4
+// TODO : STEP 4
 // creating a general implements class which implements above "DATA SOURCE" class
 // So that that it must contain the above two methods
 class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
@@ -30,14 +30,29 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
   final SupabaseClient supabaseClient;
   AuthSupabaseDataSourceImplementation(this.supabaseClient);
 
-  //
+  // User sign in method using supabase server
   @override
-  Future<String> login({required String email, required String password}) {
-    // TODO: implement login
-    throw UnimplementedError();
+  Future<UserModel> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await supabaseClient.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      if (response.user == null) {
+        throw ServerExceptions('User is null');
+      }
+
+      return UserModel.fromJson(response.user!.toJson());
+    } on ServerExceptions catch (e) {
+      throw ServerExceptions(e.toString());
+    }
   }
 
-  // User signUp method in supabase server
+  // User signUp method using supabase server
   @override
   Future<UserModel> signUp({
     required String name,

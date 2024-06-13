@@ -4,7 +4,7 @@ import 'package:blogs_app/features/auth/domain/entities/user.dart';
 import 'package:blogs_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-// TODO: STEP 8 - User Sign Up usecase
+// TODO : STEP 8 - User Sign Up usecase
 
 class UserSignUp implements UseCase<User, UserSignUpParams> {
   // accessing "Auth Repository" a constructor
