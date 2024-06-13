@@ -1,7 +1,9 @@
+import 'package:blogs_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blogs_app/core/keys/app_keys.dart';
 import 'package:blogs_app/features/auth/data/datasources/auth_supabase_data_source.dart';
 import 'package:blogs_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:blogs_app/features/auth/domain/repository/auth_repository.dart';
+import 'package:blogs_app/features/auth/domain/usecases/current_user.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_in.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -24,6 +26,9 @@ Future<void> initDependencies() async {
   );
 
   serviceLocator.registerLazySingleton(() => subapase.client);
+
+  // core
+  serviceLocator.registerLazySingleton(() => AppUserCubit());
 }
 
 void _initAuth() {
@@ -41,25 +46,34 @@ void _initAuth() {
     ),
   );
 
-  // registering "UserSignUp" Dependency
+  // registering "UserSignUp" UseCase Dependency
   serviceLocator.registerFactory(
     () => UserSignUp(
       serviceLocator(),
     ),
   );
 
-  // registering "UserSignIn" Dependency
+  // registering "UserSignIn" UseCase Dependency
   serviceLocator.registerFactory(
     () => UserSignIn(
       serviceLocator(),
     ),
   );
 
-  // registering "UserSignUp" Dependency
+  // registering "CurrentUser" UseCase Dependency
+  serviceLocator.registerFactory(
+    () => CurrentUser(
+      serviceLocator(),
+    ),
+  );
+
+  // registering "AuthBloc" Dependency
   serviceLocator.registerLazySingleton(
     () => AuthBloc(
       userSignUp: serviceLocator(),
       userSignIn: serviceLocator(),
+      currentUser: serviceLocator(),
+      appUserCubit: serviceLocator(),
     ),
   );
 }

@@ -1,5 +1,5 @@
 import 'package:blogs_app/core/theme/app_pallete.dart';
-import 'package:blogs_app/core/utils/loader.dart';
+import 'package:blogs_app/core/common/widgets/loader.dart';
 import 'package:blogs_app/core/utils/utils.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blogs_app/features/auth/presentation/pages/signup_page.dart';

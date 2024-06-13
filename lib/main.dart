@@ -1,3 +1,4 @@
+import 'package:blogs_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blogs_app/core/theme/theme.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blogs_app/features/auth/presentation/pages/login_page.dart';
@@ -12,35 +13,52 @@ void main() async {
   // initialize dependencies
   await initDependencies();
 
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => serviceLocator<AppUserCubit>()),
+        BlocProvider(create: (_) => serviceLocator<AuthBloc>()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => serviceLocator<AuthBloc>(),
-        ),
-      ],
-      child: MaterialApp(
-        title:
-            'Blogs Application using SOLID Principles and Clean Architecture',
-        theme: AppTheme.darkThemeMode,
-        home: const LoginPage(),
-      ),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(AuthIsUserLoggedIn());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return MaterialApp(
+      title: 'Blogs Application using SOLID Principles and Clean Architecture',
+      theme: AppTheme.darkThemeMode,
+      home: BlocSelector<AppUserCubit, AppUserState, bool>(
+        selector: (state) {
+          return state is AppUserLoggedIn;
+        },
+        builder: (context, isLoggedIn) {
+          if (isLoggedIn) {
+            return const Scaffold(
+              body: Center(
+                child: Text('Logged In'),
+              ),
+            );
+          }
+
+          return const LoginPage();
+        },
+      ),
+    );
   }
 }

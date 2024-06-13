@@ -7,3 +7,6 @@ import 'package:fpdart/fpdart.dart';
 abstract interface class UseCase<SuccessType, Params> {
   Future<Either<Failure, SuccessType>> call(Params params);
 }
+
+// This comes from "CurrentUser" UseCase class
+class NoParams {}

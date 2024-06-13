@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:blogs_app/core/error/failures.dart';
-import 'package:blogs_app/features/auth/domain/entities/user.dart';
+import 'package:blogs_app/core/common/entities/user.dart';
 import 'package:fpdart/fpdart.dart';
 
 // TODO : STEP 1 - Domain Layer
@@ -21,4 +21,6 @@ abstract interface class AuthRepository {
     required String email,
     required String password,
   });
+
+  Future<Either<Failure, User>> currentUser();
 }

@@ -8,6 +8,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 // so that when ever we shift to other database, only this funtion must bear the changes and not other
 // this interface retunrs a STRING
 abstract interface class AuthSupabaseDataSource {
+  //
+  Session? get getCurrentUserSession;
+
   Future<UserModel> signUp({
     required String name,
     required String email,
@@ -18,6 +21,8 @@ abstract interface class AuthSupabaseDataSource {
     required String email,
     required String password,
   });
+
+  Future<UserModel?> getCurrentUserData();
 }
 
 // TODO : STEP 4
@@ -29,6 +34,10 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
   // so that if we change database in future, we just get that database client from a cunstructor but not initializing the whole stuff again
   final SupabaseClient supabaseClient;
   AuthSupabaseDataSourceImplementation(this.supabaseClient);
+
+  //
+  @override
+  Session? get getCurrentUserSession => supabaseClient.auth.currentSession;
 
   // User sign in method using supabase server
   @override
@@ -77,6 +86,24 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
       return UserModel.fromJson(response.user!.toJson());
     } catch (e) {
       // throw any other exception
+      throw ServerExceptions(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel?> getCurrentUserData() async {
+    try {
+      if (getCurrentUserSession != null) {
+        final userData = await supabaseClient
+            .from('profiles')
+            .select()
+            .eq('id', getCurrentUserSession!.user.id);
+
+        return UserModel.fromJson(userData.first);
+      }
+
+      return null;
+    } catch (e) {
       throw ServerExceptions(e.toString());
     }
   }
