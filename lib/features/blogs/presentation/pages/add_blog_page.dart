@@ -6,7 +6,6 @@ import 'package:blogs_app/core/utils/utils.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_field.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AddBlogPage extends StatefulWidget {
   static route() => MaterialPageRoute(
