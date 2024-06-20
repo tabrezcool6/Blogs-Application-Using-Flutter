@@ -50,6 +50,7 @@ class AuthRepositoryImplementation implements AuthRepository {
         name: name,
         email: email,
         password: password,
+        
       );
       // fp_dart standard procedure or syntax
       // if result is success, use success param within right
