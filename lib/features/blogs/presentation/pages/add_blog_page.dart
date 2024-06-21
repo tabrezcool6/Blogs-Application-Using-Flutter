@@ -1,11 +1,18 @@
 import 'dart:io';
 
+import 'package:blogs_app/core/common/cubits/app_user/app_user_cubit.dart';
+import 'package:blogs_app/core/common/widgets/loader.dart';
+import 'package:blogs_app/core/error/failures.dart';
 import 'package:blogs_app/core/permissions/storage_permission.dart';
 import 'package:blogs_app/core/theme/app_pallete.dart';
 import 'package:blogs_app/core/utils/utils.dart';
+import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';
+import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_field.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddBlogPage extends StatefulWidget {
   static route() => MaterialPageRoute(
@@ -38,6 +45,25 @@ class _AddBlogPageState extends State<AddBlogPage> {
     }
   }
 
+  void uploadBlogOnTap() {
+    if (formKey.currentState!.validate() &&
+        selectedTopics.isNotEmpty &&
+        image != null) {
+      final posterId =
+          (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
+
+      context.read<BlogBloc>().add(
+            BlogUploadEvent(
+              posterId: posterId,
+              title: titleController.text.trim(),
+              content: contentController.text.trim(),
+              imageUrl: image!,
+              topics: selectedTopics,
+            ),
+          );
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -52,120 +78,143 @@ class _AddBlogPageState extends State<AddBlogPage> {
         title: const Text('New Blog'),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.done_rounded))
+          IconButton(
+            onPressed: uploadBlogOnTap,
+            icon: const Icon(Icons.done_rounded),
+          ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                image != null
-                    ? GestureDetector(
-                        onTap: selectImage,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 150,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.file(
-                              image!,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: selectImage,
-                        child: DottedBorder(
-                          color: AppPallete.borderColor,
-                          dashPattern: const [10, 4],
-                          radius: const Radius.circular(10),
-                          borderType: BorderType.RRect,
-                          strokeCap: StrokeCap.round,
-                          child: Container(
-                            height: 150,
-                            width: double.infinity,
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.folder_open,
-                                  size: 40,
-                                ),
-                                SizedBox(height: 15),
-                                Text(
-                                  'Select your image',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                const SizedBox(height: 20),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: //Constants.topics
-                        [
-                      'Education',
-                      'Technology',
-                      'News',
-                      'Politics',
-                      'Employement',
-                      'History',
-                      'Weather'
-                    ]
-                            .map(
-                              (e) => Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (selectedTopics.contains(e)) {
-                                      selectedTopics.remove(e);
-                                    } else {
-                                      selectedTopics.add(e);
-                                    }
-                                    setState(() {});
-                                  },
-                                  child: Chip(
-                                    label: Text(e),
-                                    color: selectedTopics.contains(e)
-                                        ? const MaterialStatePropertyAll(
-                                            AppPallete.gradient1,
-                                          )
-                                        : null,
-                                    side: selectedTopics.contains(e)
-                                        ? null
-                                        : const BorderSide(
-                                            color: AppPallete.borderColor,
-                                          ),
-                                  ),
+      body: BlocConsumer<BlogBloc, BlogState>(
+        listener: (context, state) {
+          if (state is BlogFailure) {
+            Utils.showSnackBar(context, state.error);
+          } else if (state is BlogSuccess) {
+            Utils.showSnackBar(context, 'Blog uploaded successfully');
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              BlogsPage.route(),
+              (route) => false,
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is BlogLoading) {
+            return const Loader();
+          }
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    image != null
+                        ? GestureDetector(
+                            onTap: selectImage,
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 150,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.file(
+                                  image!,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            )
-                            .toList(),
-                  ),
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: selectImage,
+                            child: DottedBorder(
+                              color: AppPallete.borderColor,
+                              dashPattern: const [10, 4],
+                              radius: const Radius.circular(10),
+                              borderType: BorderType.RRect,
+                              strokeCap: StrokeCap.round,
+                              child: Container(
+                                height: 150,
+                                width: double.infinity,
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.folder_open,
+                                      size: 40,
+                                    ),
+                                    SizedBox(height: 15),
+                                    Text(
+                                      'Select your image',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                    const SizedBox(height: 20),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: //Constants.topics
+                            [
+                          'Education',
+                          'Technology',
+                          'News',
+                          'Politics',
+                          'Employement',
+                          'History',
+                          'Weather'
+                        ]
+                                .map(
+                                  (e) => Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if (selectedTopics.contains(e)) {
+                                          selectedTopics.remove(e);
+                                        } else {
+                                          selectedTopics.add(e);
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: Chip(
+                                        label: Text(e),
+                                        color: selectedTopics.contains(e)
+                                            ? const MaterialStatePropertyAll(
+                                                AppPallete.gradient1,
+                                              )
+                                            : null,
+                                        side: selectedTopics.contains(e)
+                                            ? null
+                                            : const BorderSide(
+                                                color: AppPallete.borderColor,
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    BlogTextField(
+                      controller: titleController,
+                      hintText: 'Blog title',
+                    ),
+                    const SizedBox(height: 10),
+                    BlogTextField(
+                      controller: contentController,
+                      hintText: 'Blog content',
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                BlogTextField(
-                  controller: titleController,
-                  hintText: 'Blog title',
-                ),
-                const SizedBox(height: 10),
-                BlogTextField(
-                  controller: contentController,
-                  hintText: 'Blog content',
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

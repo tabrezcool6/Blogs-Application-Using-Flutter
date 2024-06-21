@@ -20,8 +20,10 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
   @override
   Future<BlogModel> uploadBlog(BlogModel blogModel) async {
     try {
-      final blogData =
-          await supabaseClient.from('blogs').insert(blogModel.toJson());
+      final blogData = await supabaseClient
+          .from('blogs')
+          .insert(blogModel.toJson())
+          .select();
 
       return BlogModel.fromJson(blogData.first);
     } catch (e) {
@@ -42,7 +44,7 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
           .from('blog_images')
           .getPublicUrl(blogModel.id);
     } catch (e) {
-     throw ServerExceptions(e.toString());
+      throw ServerExceptions(e.toString());
     }
   }
 }

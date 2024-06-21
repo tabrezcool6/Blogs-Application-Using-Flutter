@@ -2,6 +2,7 @@ import 'package:blogs_app/features/blogs/presentation/pages/add_blog_page.dart';
 import 'package:flutter/material.dart';
 
 class BlogsPage extends StatefulWidget {
+  static route() => MaterialPageRoute(builder: (context) => const BlogsPage());
   const BlogsPage({super.key});
 
   @override
