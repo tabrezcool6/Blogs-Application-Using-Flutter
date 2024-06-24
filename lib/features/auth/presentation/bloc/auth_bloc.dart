@@ -59,7 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (user) => _emitAuthSuccess(user, emit), // AuthSuccess(user),
     );
   }
-
+   
   //
   void _onAuthSignIn(
     AuthSignIn event,

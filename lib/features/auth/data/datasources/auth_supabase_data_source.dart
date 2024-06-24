@@ -23,6 +23,8 @@ abstract interface class AuthSupabaseDataSource {
   });
 
   Future<UserModel?> getCurrentUserData();
+
+  // Future<void> logout();
 }
 
 // TODO : STEP 4
@@ -107,4 +109,13 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
       throw ServerExceptions(e.toString());
     }
   }
+
+  // @override
+  // Future<void> logout() async {
+  //   try {
+  //     await supabaseClient.auth.signOut();
+  //   } catch (e) {
+  //     throw ServerExceptions(e.toString());
+  //   }
+  // }
 }

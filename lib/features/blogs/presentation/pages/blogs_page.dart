@@ -16,6 +16,10 @@ class _BlogsPageState extends State<BlogsPage> {
       appBar: AppBar(
         title: const Text('Blogs'),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.logout_rounded),
+        ),
         actions: [
           IconButton(
             onPressed: () => Navigator.push(context, AddBlogPage.route()),

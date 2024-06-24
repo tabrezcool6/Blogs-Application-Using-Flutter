@@ -50,7 +50,6 @@ class AuthRepositoryImplementation implements AuthRepository {
         name: name,
         email: email,
         password: password,
-        
       );
       // fp_dart standard procedure or syntax
       // if result is success, use success param within right
@@ -78,6 +77,20 @@ class AuthRepositoryImplementation implements AuthRepository {
       return left(Failure(e.message));
     }
   }
+
+  // @override
+  // Future<Either<Failure, User>> logout() async {
+  //   try {
+  //     final user = await authSupabaseDataSource.logout();
+  //     if (user == null) {
+  //       return left(Failure('User is not logged in'));
+  //     }
+
+  //     return right(user);
+  //   } on ServerExceptions catch (e) {
+  //     return left(Failure(e.message));
+  //   }
+  // }
 }
 
 ///
