@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:blogs_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blogs_app/core/common/widgets/loader.dart';
-import 'package:blogs_app/core/permissions/storage_permission.dart';
+import 'package:blogs_app/core/common/services/storage_permission.dart';
+import 'package:blogs_app/core/constants.dart';
 import 'package:blogs_app/core/theme/app_pallete.dart';
-import 'package:blogs_app/core/utils/utils.dart';
+import 'package:blogs_app/core/utils.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';
 import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_field.dart';
@@ -160,45 +161,36 @@ class _AddBlogPageState extends State<AddBlogPage> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: //Constants.topics
-                            [
-                          'Education',
-                          'Technology',
-                          'News',
-                          'Politics',
-                          'Employement',
-                          'History',
-                          'Weather'
-                        ]
-                                .map(
-                                  (e) => Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        if (selectedTopics.contains(e)) {
-                                          selectedTopics.remove(e);
-                                        } else {
-                                          selectedTopics.add(e);
-                                        }
-                                        setState(() {});
-                                      },
-                                      child: Chip(
-                                        label: Text(e),
-                                        color: selectedTopics.contains(e)
-                                            ? const MaterialStatePropertyAll(
-                                                AppPallete.gradient1,
-                                              )
-                                            : null,
-                                        side: selectedTopics.contains(e)
-                                            ? null
-                                            : const BorderSide(
-                                                color: AppPallete.borderColor,
-                                              ),
-                                      ),
-                                    ),
+                        children: Constants.blogTopics
+                            .map(
+                              (e) => Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (selectedTopics.contains(e)) {
+                                      selectedTopics.remove(e);
+                                    } else {
+                                      selectedTopics.add(e);
+                                    }
+                                    setState(() {});
+                                  },
+                                  child: Chip(
+                                    label: Text(e),
+                                    color: selectedTopics.contains(e)
+                                        ? const MaterialStatePropertyAll(
+                                            AppPallete.gradient1,
+                                          )
+                                        : null,
+                                    side: selectedTopics.contains(e)
+                                        ? null
+                                        : const BorderSide(
+                                            color: AppPallete.borderColor,
+                                          ),
                                   ),
-                                )
-                                .toList(),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                     const SizedBox(height: 10),

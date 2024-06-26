@@ -28,6 +28,8 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
           .select();
 
       return BlogModel.fromJson(blogData.first);
+    } on PostgrestException catch (e) {
+      throw ServerExceptions(e.message);
     } catch (e) {
       throw ServerExceptions(e.toString());
     }
@@ -45,6 +47,8 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
       return supabaseClient.storage
           .from('blog_images')
           .getPublicUrl(blogModel.id);
+    } on StorageException catch (e) {
+      throw ServerExceptions(e.message);
     } catch (e) {
       throw ServerExceptions(e.toString());
     }
@@ -63,6 +67,8 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
             ),
           )
           .toList();
+    } on PostgrestException catch (e) {
+      throw ServerExceptions(e.message);
     } catch (e) {
       throw ServerExceptions(e.toString());
     }

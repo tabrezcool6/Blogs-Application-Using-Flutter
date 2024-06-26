@@ -1,5 +1,6 @@
 import 'package:blogs_app/core/common/widgets/loader.dart';
-import 'package:blogs_app/core/utils/utils.dart';
+import 'package:blogs_app/core/theme/app_pallete.dart';
+import 'package:blogs_app/core/utils.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';
 import 'package:blogs_app/features/blogs/presentation/pages/add_blog_page.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_card.dart';
@@ -55,7 +56,9 @@ class _BlogsPageState extends State<BlogsPage> {
               itemBuilder: (context, index) {
                 final blogs = state.blogs[index];
                 return BlogCard(
-                    blog: blogs, color: Colors.pink); // Text(blogs.title);
+                  blog: blogs,
+                  color: Colors.blue.shade400,
+                ); // Text(blogs.title);
               },
             );
           }

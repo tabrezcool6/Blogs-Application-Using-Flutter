@@ -58,6 +58,8 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
       }
 
       return UserModel.fromJson(response.user!.toJson());
+    } on AuthException catch (e) {
+      throw ServerExceptions(e.message);
     } on ServerExceptions catch (e) {
       throw ServerExceptions(e.toString());
     }
@@ -86,6 +88,8 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
 
       // return USER ID on success server connection
       return UserModel.fromJson(response.user!.toJson());
+    } on AuthException catch (e) {
+      throw ServerExceptions(e.message);
     } catch (e) {
       // throw any other exception
       throw ServerExceptions(e.toString());

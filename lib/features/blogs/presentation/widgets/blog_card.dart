@@ -1,4 +1,4 @@
-import 'package:blogs_app/core/utils/utils.dart';
+import 'package:blogs_app/core/utils.dart';
 import 'package:blogs_app/features/blogs/domain/entities/blog.dart';
 import 'package:blogs_app/features/blogs/presentation/pages/view_blog_page.dart';
 import 'package:flutter/material.dart';

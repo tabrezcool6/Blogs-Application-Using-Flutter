@@ -1,5 +1,5 @@
 import 'package:blogs_app/core/theme/app_pallete.dart';
-import 'package:blogs_app/core/utils/utils.dart';
+import 'package:blogs_app/core/utils.dart';
 import 'package:blogs_app/features/blogs/domain/entities/blog.dart';
 import 'package:flutter/material.dart';
 

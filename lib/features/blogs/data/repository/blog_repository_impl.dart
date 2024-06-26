@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:blogs_app/core/constants.dart';
 import 'package:blogs_app/core/error/exceptions.dart';
 import 'package:blogs_app/core/error/failures.dart';
+import 'package:blogs_app/features/blogs/data/datasource/blog_local_data_source.dart';
 import 'package:blogs_app/features/blogs/data/datasource/blog_remote_data_source.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:blogs_app/features/blogs/data/model/blog_model.dart';
 import 'package:blogs_app/features/blogs/domain/entities/blog.dart';
@@ -11,7 +14,14 @@ import 'package:fpdart/fpdart.dart';
 
 class BlogRepositoryImplementation implements BlogRepository {
   final BlogSupabaseDataSource blogSupabaseDataSource;
-  BlogRepositoryImplementation(this.blogSupabaseDataSource);
+  final BlogLocalDataSource blogLocalDataSource;
+  final InternetConnection internetConnection;
+
+  BlogRepositoryImplementation(
+    this.blogSupabaseDataSource,
+    this.blogLocalDataSource,
+    this.internetConnection,
+  );
 
   @override
   Future<Either<Failure, Blog>> uploadBlog({
@@ -22,6 +32,10 @@ class BlogRepositoryImplementation implements BlogRepository {
     required List<String> topics,
   }) async {
     try {
+      if (!await (internetConnection.hasInternetAccess)) {
+        return left(Failure(Constants.noInternetConnectionMessage));
+      }
+
       BlogModel blogModel = BlogModel(
         id: const Uuid().v1(),
         posterId: posterId,
@@ -50,7 +64,12 @@ class BlogRepositoryImplementation implements BlogRepository {
   @override
   Future<Either<Failure, List<Blog>>> fetchBlogs() async {
     try {
+      if (!await (internetConnection.hasInternetAccess)) {
+        final blogs = blogLocalDataSource.fetchBlogsLocally();
+        return right(blogs);
+      }
       final blogs = await blogSupabaseDataSource.fetchBlogs();
+      blogLocalDataSource.uploadBlogsLocally(blogs: blogs);
       return right(blogs);
     } on ServerExceptions catch (e) {
       return left(Failure(e.message));
