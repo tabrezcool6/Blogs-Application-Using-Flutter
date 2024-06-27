@@ -25,6 +25,17 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  void loginOnTap() {
+    if (formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(
+            AuthSignIn(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim(),
+            ),
+          );
+    }
+  }
+
   @override
   void dispose() {
     emailController.dispose();
@@ -41,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           listener: (context, state) {
             if (state is AuthFailure) {
               Utils.showSnackBar(context, state.message);
-            } else {
+            } else if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
                 BlogsPage.route(),
@@ -79,22 +90,14 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
                   AuthGradientButton(
                     buttonText: 'Sign in',
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        context.read<AuthBloc>().add(
-                              AuthSignIn(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim(),
-                              ),
-                            );
-                      }
-                    },
+                    onPressed: loginOnTap,
                   ),
                   const SizedBox(height: 20),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, SignUpPage.route());
-                    },
+                    onTap: () => Navigator.push(
+                      context,
+                      SignUpPage.route(),
+                    ),
                     child: RichText(
                       text: TextSpan(
                         text: 'Don\'t have an account? ',

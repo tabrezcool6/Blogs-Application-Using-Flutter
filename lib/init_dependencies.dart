@@ -23,6 +23,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 // initialize Service Locator globally
 // This is the variable where we register all our dependicies to getIt
+
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {

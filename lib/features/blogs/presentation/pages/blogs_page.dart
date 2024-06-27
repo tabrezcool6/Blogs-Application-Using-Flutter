@@ -63,7 +63,7 @@ class _BlogsPageState extends State<BlogsPage> {
             );
           }
 
-          return const Text('No Blogs found');
+          return const SizedBox();
         },
       ),
     );

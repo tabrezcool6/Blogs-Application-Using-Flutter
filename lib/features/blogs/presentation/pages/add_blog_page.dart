@@ -32,7 +32,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
   File? image;
 
   void selectImage() async {
-    final galleryPermission = await Permissions.getStoragePermission(context);
+    final galleryPermission = await Permissions.getStoragePermission();
 
     if (galleryPermission) {
       final pickedImage = await Utils.pickImage();
@@ -41,6 +41,8 @@ class _AddBlogPageState extends State<AddBlogPage> {
           image = pickedImage;
         });
       }
+    } else {
+      Utils.showSnackBar(context, 'Storage permission required');
     }
   }
 
