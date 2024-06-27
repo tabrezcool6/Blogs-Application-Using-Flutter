@@ -3,6 +3,7 @@ import 'package:blogs_app/core/usecase/usecase.dart';
 import 'package:blogs_app/core/common/entities/user.dart';
 import 'package:blogs_app/features/auth/domain/usecases/current_user.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_in.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +15,19 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserSignUp _userSignUp;
   final UserSignIn _userSignIn;
+  final UserSignOut _userSignOut;
   final CurrentUser _currentUser;
   final AppUserCubit _appUserCubit;
 
   AuthBloc({
     required UserSignUp userSignUp,
     required UserSignIn userSignIn,
+    required UserSignOut userSignOut,
     required CurrentUser currentUser,
     required AppUserCubit appUserCubit,
   })  : _userSignUp = userSignUp,
         _userSignIn = userSignIn,
+        _userSignOut = userSignOut,
         _currentUser = currentUser,
         _appUserCubit = appUserCubit,
         super(AuthInitial()) {
@@ -35,6 +39,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // Sign In Bloc Implementation
     on<AuthSignIn>(_onAuthSignIn);
+
+    on<AuthSignOut>(_onAuthSignOut);
 
     // Current User Bloc Implementation
     on<AuthIsUserLoggedIn>(_onAuthIsUserLoggedIn);
@@ -59,7 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (user) => _emitAuthSuccess(user, emit), // AuthSuccess(user),
     );
   }
-   
+
   //
   void _onAuthSignIn(
     AuthSignIn event,
@@ -75,6 +81,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     response.fold(
       (failure) => emit(AuthFailure(failure.message)),
       (user) => _emitAuthSuccess(user, emit), // AuthSuccess(user),
+    );
+  }
+
+  void _onAuthSignOut(
+    AuthSignOut event,
+    Emitter<AuthState> emit,
+  ) async {
+    final response = await _userSignOut(NoParams());
+
+    response.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (r) => AuthSignOutSuccess(),
     );
   }
 

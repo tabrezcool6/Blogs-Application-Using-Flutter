@@ -1,6 +1,7 @@
 import 'package:blogs_app/core/common/widgets/loader.dart';
-import 'package:blogs_app/core/theme/app_pallete.dart';
 import 'package:blogs_app/core/utils.dart';
+import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:blogs_app/features/auth/presentation/pages/login_page.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';
 import 'package:blogs_app/features/blogs/presentation/pages/add_blog_page.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_card.dart';
@@ -29,7 +30,9 @@ class _BlogsPageState extends State<BlogsPage> {
         title: const Text('Blogs'),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.read<AuthBloc>().add(AuthSignOut());
+          },
           icon: const Icon(Icons.logout_rounded),
         ),
         actions: [
@@ -48,6 +51,12 @@ class _BlogsPageState extends State<BlogsPage> {
         builder: (context, state) {
           if (state is BlogLoading) {
             return const Loader();
+          } else if (state is AuthSignOutSuccess) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              LoginPage.route(),
+              (route) => false,
+            );
           }
 
           if (state is BlogFetchSuccess) {

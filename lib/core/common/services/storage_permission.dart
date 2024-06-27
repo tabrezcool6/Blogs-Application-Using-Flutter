@@ -12,7 +12,7 @@ class Permissions {
     final AndroidDeviceInfo androidInfo = await info.androidInfo;
 
     final int androidVersion =
-        double.parse(androidInfo.version.release!).truncate();
+        double.parse(androidInfo.version.release).truncate();
     bool havePermission = false;
 
     if (androidVersion >= 13) {

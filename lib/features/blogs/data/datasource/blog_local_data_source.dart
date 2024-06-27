@@ -18,6 +18,7 @@ class BlogLocalDataSourceImplementation implements BlogLocalDataSource {
         blogs.add(BlogModel.fromJson(box.get(i.toString())));
       }
     });
+    print('///// BOX FETCH ${blogs.first}');
 
     return blogs;
   }
@@ -30,5 +31,6 @@ class BlogLocalDataSourceImplementation implements BlogLocalDataSource {
         box.put(i.toString(), blogs[i].toJson());
       }
     });
+    print('///// BOX UPLOAD ${box.get('0')}');
   }
 }

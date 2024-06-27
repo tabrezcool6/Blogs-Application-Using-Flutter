@@ -1,4 +1,3 @@
-import 'package:blogs_app/core/common/services/connection_checker.dart';
 import 'package:blogs_app/core/constants.dart';
 import 'package:blogs_app/core/error/exceptions.dart';
 import 'package:blogs_app/core/error/failures.dart';
@@ -8,7 +7,6 @@ import 'package:blogs_app/features/auth/data/models/user_model.dart';
 import 'package:blogs_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 // TODO : STEP 6 - Implementation of Auth Repository of Domain Layer in Data Layer
 //
@@ -104,18 +102,15 @@ class AuthRepositoryImplementation implements AuthRepository {
     }
   }
 
-  // @override
-  // Future<Either<Failure, User>> logout() async {
-  //   try {
-  //     final user = await authSupabaseDataSource.logout();
-  //     if (user == null) {
-  //       return left(Failure('User is not logged in'));
-  //     }
-  //     return right(user);
-  //   } on ServerExceptions catch (e) {
-  //     return left(Failure(e.message));
-  //   }
-  // }
+  @override
+  Future<Either<Failure, String>> signOut() async {
+    try {
+      await authSupabaseDataSource.signOut();
+      return right('logout');
+    } on ServerExceptions catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 }
 
 /// Advanced Functiom for code optimization to be implemnted in future

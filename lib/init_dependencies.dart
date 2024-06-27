@@ -6,6 +6,7 @@ import 'package:blogs_app/features/auth/data/repository/auth_repository_impl.dar
 import 'package:blogs_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:blogs_app/features/auth/domain/usecases/current_user.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_in.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blogs_app/features/blogs/data/datasource/blog_local_data_source.dart';
@@ -89,6 +90,11 @@ void _initAuth() {
         serviceLocator(),
       ),
     )
+    ..registerFactory(
+      () => UserSignOut(
+        serviceLocator(),
+      ),
+    )
 
     // registering "CurrentUser" UseCase Dependency
     ..registerFactory(
@@ -102,6 +108,7 @@ void _initAuth() {
       () => AuthBloc(
         userSignUp: serviceLocator(),
         userSignIn: serviceLocator(),
+        userSignOut: serviceLocator(),
         currentUser: serviceLocator(),
         appUserCubit: serviceLocator(),
       ),
