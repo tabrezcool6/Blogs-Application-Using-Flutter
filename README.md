@@ -23,9 +23,9 @@ samples, guidance on mobile development, and a full API reference.
 
 
 1.
-<<<<<<< 
 ## Code to create Blogs Table in Supabase Database
 
+<<<<<<< 
 -- Create a table for public profiles
 create table profiles (
   id uuid references auth.users not null primary key,
@@ -66,9 +66,9 @@ create trigger on_auth_user_created
 
 
 2.
-<<<<<<< 
 ## Code to create Blogs Table in Supabase Database
 
+<<<<<<< 
 -- Create a table for public blogs
 create table blogs (
   id uuid not null primary key,
