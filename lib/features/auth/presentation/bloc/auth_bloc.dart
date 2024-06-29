@@ -40,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // Sign In Bloc Implementation
     on<AuthSignIn>(_onAuthSignIn);
 
+    // Sign Out Bloc Implementation
     on<AuthSignOut>(_onAuthSignOut);
 
     // Current User Bloc Implementation
@@ -92,7 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     response.fold(
       (failure) => emit(AuthFailure(failure.message)),
-      (r) => AuthSignOutSuccess(),
+      (r) => emit(AuthSignOutSuccess()),
     );
   }
 
@@ -104,7 +105,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await _currentUser(NoParams());
     result.fold(
       (failure) => emit(AuthFailure(failure.message)),
-      (user) => _emitAuthSuccess(user, emit), // AuthSuccess(user),
+      (user) => _emitAuthSuccess(user, emit),
     );
   }
 

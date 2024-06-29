@@ -31,6 +31,6 @@ class BlogLocalDataSourceImplementation implements BlogLocalDataSource {
         box.put(i.toString(), blogs[i].toJson());
       }
     });
-    print('///// BOX UPLOAD ${box.get('0')}');
+    // print('///// BOX UPLOAD ${box.get('0')}');
   }
 }

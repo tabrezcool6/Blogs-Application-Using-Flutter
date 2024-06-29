@@ -90,6 +90,8 @@ void _initAuth() {
         serviceLocator(),
       ),
     )
+
+    // registering "UserSignOut UseCase Dependency
     ..registerFactory(
       () => UserSignOut(
         serviceLocator(),

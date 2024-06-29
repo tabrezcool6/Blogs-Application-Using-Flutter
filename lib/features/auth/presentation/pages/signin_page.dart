@@ -10,17 +10,17 @@ import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   static route() => MaterialPageRoute(
-        builder: (context) => const LoginPage(),
+        builder: (context) => const SignInPage(),
       );
-  const LoginPage({super.key});
+  const SignInPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInPageState extends State<SignInPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
