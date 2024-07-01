@@ -32,18 +32,28 @@ class _AddBlogPageState extends State<AddBlogPage> {
   File? image;
 
   void selectImage() async {
-    final galleryPermission = await Permissions.getStoragePermission();
+    if (Platform.isAndroid) {
+      final galleryPermission = await Permissions.getStoragePermission();
 
-    if (galleryPermission) {
-      final pickedImage = await Utils.pickImage();
-      if (pickedImage != null) {
-        setState(() {
-          image = pickedImage;
-        });
+      if (galleryPermission) {
+        final pickedImage = await Utils.pickImage();
+        if (pickedImage != null) {
+          setState(() {
+            image = pickedImage;
+          });
+        }
+      } else {
+        Utils.showSnackBar(context, 'Storage permission required');
       }
-    } else {
-      Utils.showSnackBar(context, 'Storage permission required');
     }
+    else {
+    final pickedImage = await Utils.pickImage();
+    if (pickedImage != null) {
+      setState(() {
+        image = pickedImage;
+      });
+    }
+  }
   }
 
   void uploadBlogOnTap() {
