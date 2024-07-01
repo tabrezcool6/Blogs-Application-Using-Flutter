@@ -1,12 +1,12 @@
 import 'package:blogs_app/core/error/exceptions.dart';
 import 'package:blogs_app/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-// import 'package:fpdart/fpdart.dart';
 
 // TODO : STEP 3 - Data layer
+
 // creating a interface for the datasource
 // so that when ever we shift to other database, only this funtion must bear the changes and not other
-// this interface retunrs a STRING
+// this interface returns a STRING
 abstract interface class AuthSupabaseDataSource {
   //
   Session? get getCurrentUserSession;
@@ -41,7 +41,7 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
   @override
   Session? get getCurrentUserSession => supabaseClient.auth.currentSession;
 
-  // User sign in method using supabase server
+  // User sign in method using supabase server api call
   @override
   Future<UserModel> login({
     required String email,
@@ -53,19 +53,22 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
         password: password,
       );
 
+      // if the user is null, returning this exception
       if (response.user == null) {
         throw ServerExceptions('User is null');
       }
-
+      // returning user model with data
       return UserModel.fromJson(response.user!.toJson());
-    } on AuthException catch (e) {
+    }
+    // handeling various exceptions
+    on AuthException catch (e) {
       throw ServerExceptions(e.message);
     } on ServerExceptions catch (e) {
       throw ServerExceptions(e.toString());
     }
   }
 
-  // User signUp method using supabase server
+  // User signUp method using supabase server api call
   @override
   Future<UserModel> signUp({
     required String name,
@@ -88,14 +91,16 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
 
       // return USER ID on success server connection
       return UserModel.fromJson(response.user!.toJson());
-    } on AuthException catch (e) {
+    }
+    // handeling various exceptions
+    on AuthException catch (e) {
       throw ServerExceptions(e.message);
     } catch (e) {
-      // throw any other exception
       throw ServerExceptions(e.toString());
     }
   }
 
+  // fetching User data from Supabase server API call
   @override
   Future<UserModel?> getCurrentUserData() async {
     try {
@@ -114,6 +119,7 @@ class AuthSupabaseDataSourceImplementation implements AuthSupabaseDataSource {
     }
   }
 
+// sign out function using supabase server api call
   @override
   Future<void> signOut() async {
     try {
