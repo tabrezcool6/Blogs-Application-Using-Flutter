@@ -109,3 +109,31 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'blog_images');
 >>>>>>>>
+
+
+
+3.
+## How to add Log Out feature
+
+<<<<<<< 
+Step 1: Create 'SignOut' Function in 'AuthRepository' class of Domain Layer
+
+Step 2: Create 'SignOut' Function in interface class of 'AuthSupabaseDataSource' of Data Layer 
+
+Step 3: Implement the above 'SignOut' Function in 'AuthSupabaseDataSourceImplementation' class and write the 'UserSignOut' function
+
+Step 4: Implement the 'SignOut' Function of 'AuthRepository' in 'AuthRepositoryImplementation' class and call the 'SignOut' function of 'DataSource' class
+
+Step 5: Create 'UserSignOut' UseCase class and call hte 'SignOut' Function from 'AuthRepository'
+
+Step 6: Create an 'AuthSignOut' Event in  'Auth_Event' class in 'bloc' folder in Presentation Layer
+
+Step 7: Create 'AuthSignOutSuccess' state in 'Auth_State' class
+
+Step 8: import 'UserSignOut' class in 'AuthBloc' and call it through constructor. Write a function for 'AuthSignOut' and call 'SignOut' UseCase here.
+
+Step 8: create a button to call LogOut Function and call this AuthSignOut Function from AuthBloc, show in 'blogs_page' under lib/features/blogs/presentation/pages/blogs_page.dart
+
+note: refer the files mentioned above for complete code.
+Also, feel free to write back for any corrections, suggestions, errors or any other thing...
+>>>>>>>>

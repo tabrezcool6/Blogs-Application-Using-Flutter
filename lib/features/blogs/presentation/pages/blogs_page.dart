@@ -56,13 +56,14 @@ class _BlogsPageState extends State<BlogsPage> {
         builder: (context, state) {
           if (state is BlogLoading) {
             return const Loader();
-          } else if (state is AuthSignOutSuccess) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              SignInPage.route(),
-              (route) => false,
-            );
           }
+          //  else if (state is AuthSignOutSuccess) {
+          //   Navigator.pushAndRemoveUntil(
+          //     context,
+          //     SignInPage.route(),
+          //     (route) => false,
+          //   );
+          // }
 
           if (state is BlogFetchSuccess) {
             return ListView.builder(

@@ -44,3 +44,4 @@ app.*.map.json
 
 # Custom files to ignore
 /lib/core/keys/app_keys.dart
+/docs
