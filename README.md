@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+<!-- <<<<<<< HEAD -->
 # Blogs-App-Using-Flutter
 Blog application using S.O.L.I.D Principles and Clean Architecture
 =======
@@ -18,15 +18,14 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
->>>>>>> 65f0baec7b0a20482d7966a683bb3ead7b6c0c08
+<!-- >>>>>>> 65f0baec7b0a20482d7966a683bb3ead7b6c0c08 -->
 
 credits: 
 All the topics and concepts here are learned and implemented from #Rivaan Ranawat
 
-1.
-## Code to create Blogs Table in Supabase Database
 
-<<<<<<< 
+## 1. Code to create Blogs Table in Supabase Database
+
 -- Create a table for public profiles
 create table profiles (
   id uuid references auth.users not null primary key,
@@ -62,14 +61,12 @@ $$ language plpgsql security definer;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
->>>>>>>>
 
 
 
-2.
-## Code to create Blogs Table in Supabase Database
 
-<<<<<<< 
+## 2. Code to create Blogs Table in Supabase Database
+
 -- Create a table for public blogs
 create table blogs (
   id uuid not null primary key,
@@ -109,14 +106,12 @@ create policy "Anyone can upload an avatar." on storage.objects
 
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'blog_images');
->>>>>>>>
 
 
 
-3.
-## How to add Log Out feature
 
-<<<<<<< 
+## 3. How to add Log Out feature
+
 Step 1: Create 'SignOut' Function in 'AuthRepository' class of Domain Layer
 
 Step 2: Create 'SignOut' Function in interface class of 'AuthSupabaseDataSource' of Data Layer 
