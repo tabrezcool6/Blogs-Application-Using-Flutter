@@ -20,7 +20,8 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 >>>>>>> 65f0baec7b0a20482d7966a683bb3ead7b6c0c08
 
-
+credits: 
+All the topics and concepts here are learned and implemented from #Rivaan Ranawat
 
 1.
 ## Code to create Blogs Table in Supabase Database
