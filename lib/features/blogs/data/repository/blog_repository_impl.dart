@@ -4,7 +4,7 @@ import 'package:blogs_app/core/constants.dart';
 import 'package:blogs_app/core/error/exceptions.dart';
 import 'package:blogs_app/core/error/failures.dart';
 import 'package:blogs_app/features/blogs/data/datasource/blog_local_data_source.dart';
-import 'package:blogs_app/features/blogs/data/datasource/blog_remote_data_source.dart';
+import 'package:blogs_app/features/blogs/data/datasource/blog_supabase_data_source.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:blogs_app/features/blogs/data/model/blog_model.dart';
@@ -74,5 +74,17 @@ class BlogRepositoryImplementation implements BlogRepository {
     } on ServerExceptions catch (e) {
       return left(Failure(e.message));
     }
+  }
+
+  @override
+  Future<Either<Failure, Blog>> updateBlog({
+    required File image,
+    required String title,
+    required String content,
+    required String posterId,
+    required List<String> topics,
+  }) {
+    // TODO: implement updateBlog
+    throw UnimplementedError();
   }
 }

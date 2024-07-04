@@ -10,7 +10,7 @@ import 'package:blogs_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:blogs_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blogs_app/features/blogs/data/datasource/blog_local_data_source.dart';
-import 'package:blogs_app/features/blogs/data/datasource/blog_remote_data_source.dart';
+import 'package:blogs_app/features/blogs/data/datasource/blog_supabase_data_source.dart';
 import 'package:blogs_app/features/blogs/data/repository/blog_repository_impl.dart';
 import 'package:blogs_app/features/blogs/domain/repositories/blog_repository.dart';
 import 'package:blogs_app/features/blogs/domain/usecases/fetch_blogs.dart';

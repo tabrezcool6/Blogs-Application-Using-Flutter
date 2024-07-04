@@ -5,16 +5,22 @@ import 'package:blogs_app/features/blogs/data/model/blog_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class BlogSupabaseDataSource {
+  // Abstract method to upload blog to database
   Future<BlogModel> uploadBlog(BlogModel blogModel);
 
+  // abstract method to upload image to database
   Future<String> uploadBlogImage({
     required File image,
     required BlogModel blogModel,
   });
 
+  // abstract meethod to fetch blogs from database
   Future<List<BlogModel>> fetchBlogs();
+
+  // Future<BlogModel> updateBlog(BlogModel blogModel);
 }
 
+// concrete Implementation of above abstract class
 class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
   SupabaseClient supabaseClient;
   BlogSupabaseDataSourceImplementation(this.supabaseClient);
@@ -73,4 +79,19 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
       throw ServerExceptions(e.toString());
     }
   }
+
+  // @override
+  // Future<BlogModel> updateBlog(BlogModel blogModel) async {
+  //   try {
+  //     final blogData = await supabaseClient
+  //         .from('blogs')
+  //         .update(blogModel.toJson())
+  //         .select();
+  //     return BlogModel.fromJson(blogData.first);
+  //   } on PostgrestException catch (e) {
+  //     throw ServerExceptions(e.message);
+  //   } catch (e) {
+  //     throw ServerExceptions(e.toString());
+  //   }
+  // }
 }

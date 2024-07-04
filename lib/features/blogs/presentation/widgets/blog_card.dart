@@ -4,10 +4,12 @@ import 'package:blogs_app/features/blogs/presentation/pages/view_blog_page.dart'
 import 'package:flutter/material.dart';
 
 class BlogCard extends StatelessWidget {
+  final String userId;
   final Blog blog;
   final Color color;
   const BlogCard({
     super.key,
+    required this.userId,
     required this.blog,
     required this.color,
   });
@@ -16,7 +18,7 @@ class BlogCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, ViewBlogPage.route(blog));
+        Navigator.push(context, ViewBlogPage.route(userId, blog));
       },
       child: Container(
         height: 200,
