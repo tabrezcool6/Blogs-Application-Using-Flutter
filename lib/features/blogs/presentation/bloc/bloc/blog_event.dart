@@ -20,3 +20,20 @@ final class BlogUploadEvent extends BlogEvent {
 }
 
 final class BlogsFetchEvent extends BlogEvent {}
+
+// Event to update the existing blog, since all paramneters are not mandatory they are nullable
+final class BlogUpdateEvent extends BlogEvent {
+  String? title;
+  final String blogId;
+  // String? content;
+  // File? imageUrl;
+  // List<String>? topics;
+
+  BlogUpdateEvent({
+    this.title,
+    required this.blogId,
+    // this.content,
+    // this.imageUrl,
+    // this.topics,
+  });
+}

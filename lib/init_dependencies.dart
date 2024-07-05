@@ -14,6 +14,7 @@ import 'package:blogs_app/features/blogs/data/datasource/blog_supabase_data_sour
 import 'package:blogs_app/features/blogs/data/repository/blog_repository_impl.dart';
 import 'package:blogs_app/features/blogs/domain/repositories/blog_repository.dart';
 import 'package:blogs_app/features/blogs/domain/usecases/fetch_blogs.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/update_blogs.dart';
 import 'package:blogs_app/features/blogs/domain/usecases/upload_blog.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -156,11 +157,19 @@ void _initBlog() {
       ),
     )
 
+    // registering "UploadBlog" Dependency
+    ..registerFactory(
+      () => UpdateBlogs(
+        serviceLocator(),
+      ),
+    )
+
     // registering "BlogBloc" Dependency
     ..registerLazySingleton(
       () => BlogBloc(
         uploadBlog: serviceLocator(),
         fetchBlogs: serviceLocator(),
+        updateBlogs: serviceLocator(),
       ),
     );
 }
