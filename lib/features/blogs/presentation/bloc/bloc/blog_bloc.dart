@@ -22,7 +22,9 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
   })  : _uploadBlog = uploadBlog,
         _fetchBlogs = fetchBlogs,
         _deleteBlog = deleteBlog,
-        super(BlogInitial()) {
+        super(
+          BlogInitial(),
+        ) {
     on<BlogEvent>((event, emit) => emit(BlogLoading()));
 
     on<BlogUploadEvent>(_onBlogUpload);

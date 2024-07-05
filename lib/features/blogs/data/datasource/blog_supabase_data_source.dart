@@ -89,7 +89,6 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
   Future<void> deleteBlog({required String blogId}) async {
     try {
       await supabaseClient.from('blogs').delete().eq('id', blogId);
-      // print('//// delete func ${await supabaseClient.from('blogs')}');
     } on PostgrestException catch (e) {
       throw ServerExceptions(e.message);
     } catch (e) {

@@ -83,7 +83,7 @@ class BlogRepositoryImplementation implements BlogRepository {
         return left(Failure(Constants.noInternetConnectionMessage));
       }
       await blogSupabaseDataSource.deleteBlog(blogId: blogId);
-      return right('delete');
+      return right('deleted');
     } on ServerExceptions catch (e) {
       return left(Failure(e.message));
     }

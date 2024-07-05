@@ -23,7 +23,6 @@ class _BlogsPageState extends State<BlogsPage> {
   void initState() {
     super.initState();
     context.read<BlogBloc>().add(BlogsFetchEvent());
-    // (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
   }
 
   @override
