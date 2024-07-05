@@ -25,6 +25,7 @@ final class BlogsFetchEvent extends BlogEvent {}
 final class BlogUpdateEvent extends BlogEvent {
   String? title;
   final String blogId;
+  final Blog blogData;
   // String? content;
   // File? imageUrl;
   // List<String>? topics;
@@ -32,6 +33,7 @@ final class BlogUpdateEvent extends BlogEvent {
   BlogUpdateEvent({
     this.title,
     required this.blogId,
+    required this.blogData,
     // this.content,
     // this.imageUrl,
     // this.topics,

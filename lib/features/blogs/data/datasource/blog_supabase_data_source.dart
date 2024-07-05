@@ -82,7 +82,10 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
   }
 
   @override
-  Future<BlogModel> updateBlog({String? title, required String blogId}) async {
+  Future<BlogModel> updateBlog({
+    String? title,
+    required String blogId,
+  }) async {
     try {
       print('///// id $blogId');
       print('///// title $title');
@@ -93,7 +96,6 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
           .eq('id', blogId)
           .select();
 
-          
       return BlogModel.fromJson(blogData.first);
     } on PostgrestException catch (e) {
       throw ServerExceptions(e.message);

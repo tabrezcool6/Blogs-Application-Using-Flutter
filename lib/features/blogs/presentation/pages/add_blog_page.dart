@@ -106,6 +106,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
             BlogUpdateEvent(
               title: titleController.text.trim(),
               blogId: widget.blog!.id,
+              blogData: blogData!,
             ),
           );
     }
@@ -137,6 +138,14 @@ class _AddBlogPageState extends State<AddBlogPage> {
             Utils.showSnackBar(context, state.error);
           } else if (state is BlogUploadSuccess) {
             Utils.showSnackBar(context, 'Blog uploaded successfully');
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              BlogsPage.route(),
+              (route) => false,
+            );
+          } else if (state is BlogUpdateSuccess) {
+            Utils.showSnackBar(context, 'Blog updated successfully');
 
             Navigator.pushAndRemoveUntil(
               context,

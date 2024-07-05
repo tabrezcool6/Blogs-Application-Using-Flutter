@@ -5,6 +5,7 @@ import 'package:blogs_app/core/error/exceptions.dart';
 import 'package:blogs_app/core/error/failures.dart';
 import 'package:blogs_app/features/blogs/data/datasource/blog_local_data_source.dart';
 import 'package:blogs_app/features/blogs/data/datasource/blog_supabase_data_source.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/update_blogs.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:blogs_app/features/blogs/data/model/blog_model.dart';
@@ -76,6 +77,7 @@ class BlogRepositoryImplementation implements BlogRepository {
     }
   }
 
+
   @override
   Future<Either<Failure, Blog>> updateBlog({
     String? title,
@@ -104,10 +106,9 @@ class BlogRepositoryImplementation implements BlogRepository {
 
       // blogModel = blogModel.copyWith(imageUrl: imageUrl);
 
-      //  BlogModel model =  blogModel.copyWith(id: blogId, )
+    //  BlogModel model =  blogModel.copyWith(id: blogId, )
 
-      final uploadingBlog =
-          await blogSupabaseDataSource.updateBlog(title: title, blogId: blogId);
+      final uploadingBlog = await blogSupabaseDataSource.updateBlog(title: title, blogId: blogId);
 
       return right(uploadingBlog);
     } on ServerExceptions catch (e) {
