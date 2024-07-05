@@ -6,6 +6,7 @@ import 'package:blogs_app/features/blogs/presentation/pages/add_blog_page.dart';
 import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// git fetch origin 'updateBlogFeature_tabrezcool6':'local_updateBlogFeature_tabrezcool6'
 
 class ViewBlogPage extends StatelessWidget {
   static route(String userId, Blog blog) => MaterialPageRoute(
@@ -24,19 +25,19 @@ class ViewBlogPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            ///
+            /// Edit Blog Icon Button
             userId == blog.posterId
                 ? IconButton(
                     onPressed: () {
-                      Navigator.push(context, AddBlogPage.route(blog: blog));
-                      // final posterId = blog.posterId;
-                      // print('//// User id $userId');
-                      // print('//// Poster id $posterId');
+                      Navigator.push(
+                        context,
+                        AddBlogPage.route(blog: blog),
+                      );
                     },
                     icon: const Icon(Icons.edit))
                 : const SizedBox(),
 
-            ///
+            /// Delete Blog Icon Button
             userId == blog.posterId
                 ? IconButton(
                     onPressed: () {
