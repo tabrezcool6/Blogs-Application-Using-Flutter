@@ -63,25 +63,31 @@ class _AddBlogPageState extends State<AddBlogPage> {
   }
 
   void uploadBlogOnTap() {
-    if (formKey.currentState!.validate()) {
-      if (image == null) {
-        Utils.showSnackBar(context, 'Image is required');
-      } else if (selectedTopics.isEmpty) {
-        Utils.showSnackBar(context, 'Atleast one topic must be selected');
-      } else {
-        final posterId =
-            (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
+    if (widget.blog == null) {
+      if (formKey.currentState!.validate()) {
+        if (image == null) {
+          Utils.showSnackBar(context, 'Image is required');
+        } else if (selectedTopics.isEmpty) {
+          Utils.showSnackBar(context, 'Atleast one topic must be selected');
+        } else {
+          final posterId =
+              (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
 
-        context.read<BlogBloc>().add(
-              BlogUploadEvent(
-                posterId: posterId,
-                title: titleController.text.trim(),
-                content: contentController.text.trim(),
-                imageUrl: image!,
-                topics: selectedTopics,
-              ),
-            );
+          context.read<BlogBloc>().add(
+                BlogUploadEvent(
+                  posterId: posterId,
+                  title: titleController.text.trim(),
+                  content: contentController.text.trim(),
+                  imageUrl: image!,
+                  topics: selectedTopics,
+                ),
+              );
+        }
       }
+    } else {
+      print('/// Updateing funtion');
+      print(
+          '/// ${titleController.text.trim()} \n${titleController.text.trim()} \n$image! \n$selectedTopics ');
     }
   }
 

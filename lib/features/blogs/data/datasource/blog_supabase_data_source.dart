@@ -17,10 +17,10 @@ abstract interface class BlogSupabaseDataSource {
   // abstract meethod to fetch blogs from database
   Future<List<BlogModel>> fetchBlogs();
 
-  // Future<BlogModel> updateBlog(BlogModel blogModel);
+  Future<void> deleteBlog({required String blogId});
 }
 
-// concrete Implementation of above abstract class
+// concrete Implementatiion of abstract
 class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
   SupabaseClient supabaseClient;
   BlogSupabaseDataSourceImplementation(this.supabaseClient);
@@ -66,6 +66,11 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
       final blogs =
           await supabaseClient.from('blogs').select('*, profiles (name)');
 
+      // method to sort blogs based on blog created time
+      // i.e, newly created blog will be displayed on the top of the list
+      blogs.sort((a, b) =>
+          (b["updated_at"] as String).compareTo(a["updated_at"] as String));
+
       return blogs
           .map(
             (blog) => BlogModel.fromJson(blog).copyWith(
@@ -80,18 +85,15 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
     }
   }
 
-  // @override
-  // Future<BlogModel> updateBlog(BlogModel blogModel) async {
-  //   try {
-  //     final blogData = await supabaseClient
-  //         .from('blogs')
-  //         .update(blogModel.toJson())
-  //         .select();
-  //     return BlogModel.fromJson(blogData.first);
-  //   } on PostgrestException catch (e) {
-  //     throw ServerExceptions(e.message);
-  //   } catch (e) {
-  //     throw ServerExceptions(e.toString());
-  //   }
-  // }
+  @override
+  Future<void> deleteBlog({required String blogId}) async {
+    try {
+      await supabaseClient.from('blogs').delete().eq('id', blogId);
+      // print('//// delete func ${await supabaseClient.from('blogs')}');
+    } on PostgrestException catch (e) {
+      throw ServerExceptions(e.message);
+    } catch (e) {
+      throw ServerExceptions(e.toString());
+    }
+  }
 }

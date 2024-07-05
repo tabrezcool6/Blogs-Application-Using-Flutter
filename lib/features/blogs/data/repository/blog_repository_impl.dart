@@ -77,14 +77,15 @@ class BlogRepositoryImplementation implements BlogRepository {
   }
 
   @override
-  Future<Either<Failure, Blog>> updateBlog({
-    required File image,
-    required String title,
-    required String content,
-    required String posterId,
-    required List<String> topics,
-  }) {
-    // TODO: implement updateBlog
-    throw UnimplementedError();
+  Future<Either<Failure, String>> deleteBlog({required String blogId}) async {
+    try {
+      if (!await (internetConnection.hasInternetAccess)) {
+        return left(Failure(Constants.noInternetConnectionMessage));
+      }
+      await blogSupabaseDataSource.deleteBlog(blogId: blogId);
+      return right('delete');
+    } on ServerExceptions catch (e) {
+      return left(Failure(e.message));
+    }
   }
 }

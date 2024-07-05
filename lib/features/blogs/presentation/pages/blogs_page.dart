@@ -35,6 +35,7 @@ class _BlogsPageState extends State<BlogsPage> {
         leading: IconButton(
           onPressed: () {
             context.read<AuthBloc>().add(AuthSignOut());
+
             Navigator.pushAndRemoveUntil(
               context,
               SignInPage.route(),
@@ -60,7 +61,7 @@ class _BlogsPageState extends State<BlogsPage> {
           if (state is BlogLoading) {
             return const Loader();
           }
-          //  else if (state is AuthSignOutSuccess) {
+          // else if (state is AuthSignOutSuccess) {
           //   Navigator.pushAndRemoveUntil(
           //     context,
           //     SignInPage.route(),
@@ -69,20 +70,25 @@ class _BlogsPageState extends State<BlogsPage> {
           // }
 
           if (state is BlogFetchSuccess) {
-            return ListView.builder(
-              itemCount: state.blogs.length,
-              itemBuilder: (context, index) {
-                final loggedInUserId =
-                    (context.read<AppUserCubit>().state as AppUserLoggedIn)
-                        .user
-                        .id;
-                final blogs = state.blogs[index];
-                return BlogCard(
-                  userId: loggedInUserId,
-                  blog: blogs,
-                  color: Colors.blue.shade400,
-                ); // Text(blogs.title);
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<BlogBloc>().add(BlogsFetchEvent());
               },
+              child: ListView.builder(
+                itemCount: state.blogs.length,
+                itemBuilder: (context, index) {
+                  final loggedInUserId =
+                      (context.read<AppUserCubit>().state as AppUserLoggedIn)
+                          .user
+                          .id;
+                  final blogs = state.blogs[index];
+                  return BlogCard(
+                    userId: loggedInUserId,
+                    blog: blogs,
+                    color: Colors.blue.shade400,
+                  ); // Text(blogs.title);
+                },
+              ),
             );
           }
 
