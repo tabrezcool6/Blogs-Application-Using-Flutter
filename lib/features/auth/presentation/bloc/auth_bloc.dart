@@ -1,10 +1,10 @@
 import 'package:blogs_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blogs_app/core/usecase/usecase.dart';
 import 'package:blogs_app/core/common/entities/user.dart';
-import 'package:blogs_app/features/auth/domain/usecases/current_user.dart';
-import 'package:blogs_app/features/auth/domain/usecases/user_sign_in.dart';
-import 'package:blogs_app/features/auth/domain/usecases/user_sign_out.dart';
-import 'package:blogs_app/features/auth/domain/usecases/user_sign_up.dart';
+import 'package:blogs_app/features/auth/domain/usecases/current_user_usecase.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_in_usecase.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_out_usecase.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_up_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 

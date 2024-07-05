@@ -77,6 +77,45 @@ class BlogRepositoryImplementation implements BlogRepository {
   }
 
   @override
+  Future<Either<Failure, Blog>> updateBlog({
+    String? title,
+    required String blogId,
+    // required BlogModel blogModel,
+  }) async {
+    try {
+      if (!await (internetConnection.hasInternetAccess)) {
+        return left(Failure(Constants.noInternetConnectionMessage));
+      }
+
+      // BlogModel blogModel = BlogModel(
+      //   id: blogId,
+      //   posterId: 'posterId',
+      //   title: title!,
+      //   content: 'content',
+      //   imageUrl: '',
+      //   topics: [],
+      //   updatedAt: DateTime.now(),
+      // );
+
+      // final imageUrl = await blogSupabaseDataSource.uploadBlogImage(
+      //   image: image,
+      //   blogModel: blogModel,
+      // );
+
+      // blogModel = blogModel.copyWith(imageUrl: imageUrl);
+
+      //  BlogModel model =  blogModel.copyWith(id: blogId, )
+
+      final uploadingBlog =
+          await blogSupabaseDataSource.updateBlog(title: title, blogId: blogId);
+
+      return right(uploadingBlog);
+    } on ServerExceptions catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, String>> deleteBlog({required String blogId}) async {
     try {
       if (!await (internetConnection.hasInternetAccess)) {

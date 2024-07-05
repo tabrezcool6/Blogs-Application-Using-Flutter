@@ -4,18 +4,19 @@ import 'package:blogs_app/core/keys/app_keys.dart';
 import 'package:blogs_app/features/auth/data/datasources/auth_supabase_data_source.dart';
 import 'package:blogs_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:blogs_app/features/auth/domain/repository/auth_repository.dart';
-import 'package:blogs_app/features/auth/domain/usecases/current_user.dart';
-import 'package:blogs_app/features/auth/domain/usecases/user_sign_in.dart';
-import 'package:blogs_app/features/auth/domain/usecases/user_sign_out.dart';
-import 'package:blogs_app/features/auth/domain/usecases/user_sign_up.dart';
+import 'package:blogs_app/features/auth/domain/usecases/current_user_usecase.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_in_usecase.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_out_usecase.dart';
+import 'package:blogs_app/features/auth/domain/usecases/user_sign_up_usecase.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blogs_app/features/blogs/data/datasource/blog_local_data_source.dart';
 import 'package:blogs_app/features/blogs/data/datasource/blog_supabase_data_source.dart';
 import 'package:blogs_app/features/blogs/data/repository/blog_repository_impl.dart';
 import 'package:blogs_app/features/blogs/domain/repositories/blog_repository.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/delete_blog.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/fetch_blogs.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/upload_blog.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/delete_blog_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/fetch_blogs_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/update_blogs_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/upload_blog_usecase.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -157,6 +158,13 @@ void _initBlog() {
       ),
     )
 
+    // registering "UploadBlog" Dependency
+    ..registerFactory(
+      () => UpdateBlogs(
+        serviceLocator(),
+      ),
+    )
+
     // registering "Delete Blog" Dependency
     ..registerFactory(
       () => DeleteBlog(
@@ -169,6 +177,7 @@ void _initBlog() {
       () => BlogBloc(
         uploadBlog: serviceLocator(),
         fetchBlogs: serviceLocator(),
+        updateBlogs: serviceLocator(),
         deleteBlog: serviceLocator(),
       ),
     );

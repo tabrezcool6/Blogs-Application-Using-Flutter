@@ -1,7 +1,7 @@
 import 'package:blogs_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blogs_app/core/common/widgets/loader.dart';
 import 'package:blogs_app/core/utils.dart';
-import 'package:blogs_app/features/auth/domain/usecases/current_user.dart';
+import 'package:blogs_app/features/auth/domain/usecases/current_user_usecase.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blogs_app/features/auth/presentation/pages/signin_page.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';

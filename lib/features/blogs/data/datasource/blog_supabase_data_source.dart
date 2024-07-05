@@ -17,6 +17,9 @@ abstract interface class BlogSupabaseDataSource {
   // abstract meethod to fetch blogs from database
   Future<List<BlogModel>> fetchBlogs();
 
+  // abstract meethod to Update blogs from database
+  Future<BlogModel> updateBlog({String? title, required String blogId});
+
   Future<void> deleteBlog({required String blogId});
 }
 
@@ -89,6 +92,29 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
   Future<void> deleteBlog({required String blogId}) async {
     try {
       await supabaseClient.from('blogs').delete().eq('id', blogId);
+    } on PostgrestException catch (e) {
+      throw ServerExceptions(e.message);
+    } catch (e) {
+      throw ServerExceptions(e.toString());
+    }
+  }
+
+  @override
+  Future<BlogModel> updateBlog({
+    String? title,
+    required String blogId,
+  }) async {
+    try {
+      print('///// id $blogId');
+      print('///// title $title');
+
+      final blogData = await supabaseClient
+          .from('blogs')
+          .update({'title': title})
+          .eq('id', blogId)
+          .select();
+
+      return BlogModel.fromJson(blogData.first);
     } on PostgrestException catch (e) {
       throw ServerExceptions(e.message);
     } catch (e) {

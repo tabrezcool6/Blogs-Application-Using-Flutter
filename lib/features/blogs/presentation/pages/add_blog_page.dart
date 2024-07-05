@@ -12,6 +12,7 @@ import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_field.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddBlogPage extends StatefulWidget {
@@ -27,11 +28,27 @@ class AddBlogPage extends StatefulWidget {
 }
 
 class _AddBlogPageState extends State<AddBlogPage> {
-  final titleController = TextEditingController();
-  final contentController = TextEditingController();
+  Blog? blogData;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   List<String> selectedTopics = [];
   File? image;
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// initializing Blog Data values to the local varibales in page
+    final blogDataa = widget.blog;
+    if (blogDataa != null) {
+      blogData = blogDataa;
+      titleController = TextEditingController(text: blogDataa.title);
+      contentController = TextEditingController(text: blogDataa.content);
+
+      selectedTopics = blogDataa.topics;
+    }
+  }
 
   void selectImage() async {
     File? pickedImage;
@@ -64,30 +81,36 @@ class _AddBlogPageState extends State<AddBlogPage> {
 
   void uploadBlogOnTap() {
     if (widget.blog == null) {
-      if (formKey.currentState!.validate()) {
-        if (image == null) {
-          Utils.showSnackBar(context, 'Image is required');
-        } else if (selectedTopics.isEmpty) {
-          Utils.showSnackBar(context, 'Atleast one topic must be selected');
-        } else {
-          final posterId =
-              (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
+      if (widget.blog == null) {
+        if (formKey.currentState!.validate()) {
+          if (image == null) {
+            Utils.showSnackBar(context, 'Image is required');
+          } else if (selectedTopics.isEmpty) {
+            Utils.showSnackBar(context, 'Atleast one topic must be selected');
+          } else {
+            final posterId =
+                (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
 
-          context.read<BlogBloc>().add(
-                BlogUploadEvent(
-                  posterId: posterId,
-                  title: titleController.text.trim(),
-                  content: contentController.text.trim(),
-                  imageUrl: image!,
-                  topics: selectedTopics,
-                ),
-              );
+            context.read<BlogBloc>().add(
+                  BlogUploadEvent(
+                    posterId: posterId,
+                    title: titleController.text.trim(),
+                    content: contentController.text.trim(),
+                    imageUrl: image!,
+                    topics: selectedTopics,
+                  ),
+                );
+          }
         }
       }
     } else {
-      print('/// Updateing funtion');
-      print(
-          '/// ${titleController.text.trim()} \n${titleController.text.trim()} \n$image! \n$selectedTopics ');
+      context.read<BlogBloc>().add(
+            BlogUpdateEvent(
+              title: titleController.text.trim(),
+              blogId: widget.blog!.id,
+              blogData: blogData!,
+            ),
+          );
     }
   }
 
@@ -100,10 +123,6 @@ class _AddBlogPageState extends State<AddBlogPage> {
 
   @override
   Widget build(BuildContext context) {
-    final blogData = widget.blog;
-    if (widget.blog != null) {
-      selectedTopics = blogData!.topics;
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text(!(blogData == null) ? 'New Blog' : 'Edit Blog'),
@@ -121,6 +140,14 @@ class _AddBlogPageState extends State<AddBlogPage> {
             Utils.showSnackBar(context, state.error);
           } else if (state is BlogUploadSuccess) {
             Utils.showSnackBar(context, 'Blog uploaded successfully');
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              BlogsPage.route(),
+              (route) => false,
+            );
+          } else if (state is BlogUpdateSuccess) {
+            Utils.showSnackBar(context, 'Blog updated successfully');
 
             Navigator.pushAndRemoveUntil(
               context,
@@ -210,7 +237,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.network(
-                                      blogData.imageUrl,
+                                      blogData!.imageUrl,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -254,18 +281,16 @@ class _AddBlogPageState extends State<AddBlogPage> {
                             .toList(),
                       ),
                     ),
+
                     const SizedBox(height: 10),
+
                     BlogTextField(
-                      controller: (blogData == null)
-                          ? titleController
-                          : TextEditingController(text: blogData.title),
+                      controller: titleController,
                       hintText: 'Blog title',
                     ),
                     const SizedBox(height: 10),
                     BlogTextField(
-                      controller: (blogData == null)
-                          ? contentController
-                          : TextEditingController(text: blogData.content),
+                      controller: contentController,
                       hintText: 'Blog content',
                     ),
                   ],
@@ -278,6 +303,13 @@ class _AddBlogPageState extends State<AddBlogPage> {
     );
   }
 }
+
+
+
+
+
+
+
 
 
 /*
