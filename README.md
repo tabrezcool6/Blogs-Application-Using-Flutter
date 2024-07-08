@@ -140,7 +140,7 @@ note: Please update the policies in the Supabase Database to make the functional
 
 ## 5. App Screen Shots
 
-Sign In Page                             |  Sign Out Page
+Sign In Page                             |  Sign Up Page
 :-------------------------:              |:-------------------------:
 ![alt text](<screenshots/1 sign_in.png>) |![alt text](<screenshots/2 sign_out.png>) 
 
