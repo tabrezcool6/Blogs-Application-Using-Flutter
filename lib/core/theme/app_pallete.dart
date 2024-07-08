@@ -11,7 +11,7 @@ class AppPallete {
   static const Color greyColor = Colors.grey;
   static const Color errorColor = Colors.redAccent;
   static const Color transparentColor = Colors.transparent;
-  static Color chipColor = Colors.blue.shade50;
+  static Color chipColor = Colors.blue.shade400;
   static const Color cardColor = Color(0xFF1f242b);
   // static const Color cardColor = Color.fromRGBO(255, 121, 72, 1);
 }

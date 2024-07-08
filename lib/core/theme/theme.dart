@@ -49,5 +49,9 @@ class AppTheme {
       focusedBorder: _border(AppPallete.gradient2),
       errorBorder: _border(AppPallete.errorColor),
     ),
+    progressIndicatorTheme:
+        ProgressIndicatorThemeData(color: AppPallete.chipColor),
+    indicatorColor: AppPallete.chipColor,
+    
   );
 }

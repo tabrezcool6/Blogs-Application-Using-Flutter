@@ -48,7 +48,7 @@ class BlogCard extends StatelessWidget {
                                   color: AppPallete.whiteColor,
                                 ),
                               ),
-                              color: WidgetStatePropertyAll<Color>(
+                              color: MaterialStatePropertyAll<Color>(
                                 AppPallete.chipColor,
                               ),
                             ),
@@ -63,6 +63,13 @@ class BlogCard extends StatelessWidget {
                     color: AppPallete.whiteColor,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'author: ${blog.posterName!}',
+                  style: const TextStyle(
+                    color: AppPallete.whiteColor,
+                    // fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

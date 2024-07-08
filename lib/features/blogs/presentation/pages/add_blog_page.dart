@@ -271,7 +271,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
                                       ),
                                     ),
                                     color: selectedTopics.contains(e)
-                                        ? WidgetStatePropertyAll(
+                                        ? MaterialStatePropertyAll(
                                             AppPallete.chipColor,
                                           )
                                         : null,

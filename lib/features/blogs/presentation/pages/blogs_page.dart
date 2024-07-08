@@ -60,17 +60,17 @@ class _BlogsPageState extends State<BlogsPage> {
         builder: (context, state) {
           if (state is BlogLoading) {
             return const Loader();
+          } else if (state is AuthSignOutSuccess) {
+            Utils.showSnackBar(context, 'Logged out Successfully');
+            // Navigator.pushAndRemoveUntil(
+            //   context,
+            //   SignInPage.route(),
+            //   (route) => false,
+            // );
           }
-          // else if (state is AuthSignOutSuccess) {
-          //   Navigator.pushAndRemoveUntil(
-          //     context,
-          //     SignInPage.route(),
-          //     (route) => false,
-          //   );
-          // }
 
           if (state is BlogReadSuccess) {
-            return RefreshIndicator(
+            return RefreshIndicator(color: AppPallete.chipColor,
               onRefresh: () async {
                 context.read<BlogBloc>().add(BlogReadEvent());
               },
