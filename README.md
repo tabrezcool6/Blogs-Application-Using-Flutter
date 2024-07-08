@@ -140,18 +140,18 @@ note: Please update the policies in the Supabase Database to make the functional
 
 ## 5. App Screen Shots
 
-Solarized dark                           |  Solarized Ocean
+Sign In Page                             |  Sign Out Page
 :-------------------------:              |:-------------------------:
 ![alt text](<screenshots/1 sign_in.png>) |![alt text](<screenshots/2 sign_out.png>) 
 
 
 
-Solarized dark                           |  Solarized Ocean
-:-------------------------:              |:-------------------------:
+Home Page                                 |  View Blog Details Page
+:-------------------------:               |:-------------------------:
 ![alt text](<screenshots/3 homepage.png>) |![alt text](<screenshots/4 view_blog.png>) 
 
 
 
-Solarized dark                           |  Solarized Ocean
-:-------------------------:              |:-------------------------:
+Create New Blog Page                      |  Edit Blog Page
+:-------------------------:               |:-------------------------:
 ![alt text](<screenshots/5 new_blog.png>) |![alt text](<screenshots/6 edit_blog.png>) 
