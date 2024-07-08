@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:blogs_app/core/usecase/usecase.dart';
 import 'package:blogs_app/features/blogs/domain/entities/blog.dart';
 import 'package:blogs_app/features/blogs/domain/usecases/delete_blog_usecase.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/fetch_blogs_usecase.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/update_blogs_usecase.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/upload_blog_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/read_blog_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/update_blog_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/create_blog_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,36 +13,39 @@ part 'blog_event.dart';
 part 'blog_state.dart';
 
 class BlogBloc extends Bloc<BlogEvent, BlogState> {
-  final UploadBlog _uploadBlog;
-  final FetchBlogs _fetchBlogs;
-  final UpdateBlogs _updateBlogs;
-  final DeleteBlog _deleteBlog;
+  final CreateBlogUsecase _createBlogUsecase;
+  final ReadBlogUsecase _readBlogUsecase;
+  final UpdateBlogUsecase _updateBlogUsecase;
+  final DeleteBlogUsecase _deleteBlogUsecase;
   BlogBloc({
-    required UploadBlog uploadBlog,
-    required FetchBlogs fetchBlogs,
-    required UpdateBlogs updateBlogs,
-    required DeleteBlog deleteBlog,
-  })  : _uploadBlog = uploadBlog,
-        _fetchBlogs = fetchBlogs,
-        _updateBlogs = updateBlogs,
-        _deleteBlog = deleteBlog,
+    required CreateBlogUsecase createBlogUsecase,
+    required ReadBlogUsecase readBlogUsecase,
+    required UpdateBlogUsecase updateBlogUsecase,
+    required DeleteBlogUsecase deleteBlogUsecase,
+  })  : _createBlogUsecase = createBlogUsecase,
+        _readBlogUsecase = readBlogUsecase,
+        _updateBlogUsecase = updateBlogUsecase,
+        _deleteBlogUsecase = deleteBlogUsecase,
         super(
           BlogInitial(),
         ) {
     on<BlogEvent>((event, emit) => emit(BlogLoading()));
 
-    on<BlogUploadEvent>(_onBlogUpload);
+    on<BlogCreateEvent>(_onBlogCreaete);
 
-    on<BlogsFetchEvent>(_onFetchBlogs);
+    on<BlogReadEvent>(_onBlogRead);
 
     on<BlogUpdateEvent>(_onBlogUpdate);
 
     on<BlogDeleteEvent>(_onBlogDelete);
   }
 
-  void _onBlogUpload(BlogUploadEvent event, Emitter<BlogState> emit) async {
-    final response = await _uploadBlog(
-      UploadBlogParams(
+  void _onBlogCreaete(
+    BlogCreateEvent event,
+    Emitter<BlogState> emit,
+  ) async {
+    final response = await _createBlogUsecase(
+      CreateBlogParams(
         posterId: event.posterId,
         title: event.title,
         content: event.content,
@@ -53,25 +56,36 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
 
     response.fold(
       (l) => emit(BlogFailure(l.message)),
-      (r) => emit(BlogUploadSuccess()),
+      (r) => emit(BlogCreateSuccess()),
     );
   }
 
-  void _onFetchBlogs(BlogsFetchEvent event, Emitter<BlogState> emit) async {
-    final response = await _fetchBlogs(NoParams());
+  void _onBlogRead(
+    BlogReadEvent event,
+    Emitter<BlogState> emit,
+  ) async {
+    final response = await _readBlogUsecase(
+      NoParams(),
+    );
 
     response.fold(
       (l) => emit(BlogFailure(l.message)),
-      (blogs) => emit(BlogFetchSuccess(blogs)),
+      (blogs) => emit(BlogReadSuccess(blogs)),
     );
   }
 
   /// Update Blog
-  void _onBlogUpdate(BlogUpdateEvent event, Emitter<BlogState> emit) async {
-    final response = await _updateBlogs(
-      BlogUpdateParams(
+  void _onBlogUpdate(
+    BlogUpdateEvent event,
+    Emitter<BlogState> emit,
+  ) async {
+    final response = await _updateBlogUsecase(
+      UpdateBlogParams(
         title: event.title,
+        content: event.content,
         blogId: event.blogId,
+        topics: event.topics,
+        imageUrl: event.imageUrl,
       ),
     );
 
@@ -83,8 +97,13 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
 
   ///
 
-  void _onBlogDelete(BlogDeleteEvent event, Emitter<BlogState> emit) async {
-    final result = await _deleteBlog(DeleteBlogParams(blogId: event.blogId));
+  void _onBlogDelete(
+    BlogDeleteEvent event,
+    Emitter<BlogState> emit,
+  ) async {
+    final result = await _deleteBlogUsecase(
+      DeleteBlogParams(blogId: event.blogId),
+    );
     result.fold(
       (l) => emit(BlogFailure(l.message)),
       (blogs) => emit(BlogDeleteSuccess()),

@@ -12,7 +12,6 @@ import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_field.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddBlogPage extends StatefulWidget {
@@ -75,8 +74,6 @@ class _AddBlogPageState extends State<AddBlogPage> {
         });
       }
     }
-    print('//// IMAGE $pickedImage');
-    print('//// IMAGE ${widget.blog!.imageUrl}');
   }
 
   void uploadBlogOnTap() {
@@ -92,7 +89,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
                 (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
 
             context.read<BlogBloc>().add(
-                  BlogUploadEvent(
+                  BlogCreateEvent(
                     posterId: posterId,
                     title: titleController.text.trim(),
                     content: contentController.text.trim(),
@@ -107,8 +104,10 @@ class _AddBlogPageState extends State<AddBlogPage> {
       context.read<BlogBloc>().add(
             BlogUpdateEvent(
               title: titleController.text.trim(),
+              content: contentController.text.trim(),
               blogId: widget.blog!.id,
-              blogData: blogData!,
+              topics: selectedTopics,
+              imageUrl: image,
             ),
           );
     }
@@ -138,7 +137,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
         listener: (context, state) {
           if (state is BlogFailure) {
             Utils.showSnackBar(context, state.error);
-          } else if (state is BlogUploadSuccess) {
+          } else if (state is BlogCreateSuccess) {
             Utils.showSnackBar(context, 'Blog uploaded successfully');
 
             Navigator.pushAndRemoveUntil(
@@ -263,10 +262,17 @@ class _AddBlogPageState extends State<AddBlogPage> {
                                     setState(() {});
                                   },
                                   child: Chip(
-                                    label: Text(e),
+                                    label: Text(
+                                      e,
+                                      style: TextStyle(
+                                        color: selectedTopics.contains(e)
+                                            ? AppPallete.whiteColor
+                                            : null,
+                                      ),
+                                    ),
                                     color: selectedTopics.contains(e)
-                                        ? const WidgetStatePropertyAll(
-                                            AppPallete.gradient1,
+                                        ? WidgetStatePropertyAll(
+                                            AppPallete.chipColor,
                                           )
                                         : null,
                                     side: selectedTopics.contains(e)

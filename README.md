@@ -133,3 +133,7 @@ Step 8: create a button to call LogOut Function and call this AuthSignOut Functi
 note: refer the files mentioned above for complete code.
 Also, feel free to write back for any corrections, suggestions, errors or any other thing...
 >>>>>>>>
+
+
+## 4. Added C.R.U.D Operation in the application
+note: Please update the policies in the Supabase Database to make the functionalities work.

@@ -24,7 +24,7 @@ class BlogRepositoryImplementation implements BlogRepository {
   );
 
   @override
-  Future<Either<Failure, Blog>> uploadBlog({
+  Future<Either<Failure, Blog>> createBlog({
     required File image,
     required String title,
     required String content,
@@ -48,12 +48,12 @@ class BlogRepositoryImplementation implements BlogRepository {
 
       final imageUrl = await blogSupabaseDataSource.uploadBlogImage(
         image: image,
-        blogModel: blogModel,
+        blogId: blogModel.id,
       );
 
       blogModel = blogModel.copyWith(imageUrl: imageUrl);
 
-      final uploadingBlog = await blogSupabaseDataSource.uploadBlog(blogModel);
+      final uploadingBlog = await blogSupabaseDataSource.createBlog(blogModel);
 
       return right(uploadingBlog);
     } on ServerExceptions catch (e) {
@@ -62,13 +62,13 @@ class BlogRepositoryImplementation implements BlogRepository {
   }
 
   @override
-  Future<Either<Failure, List<Blog>>> fetchBlogs() async {
+  Future<Either<Failure, List<Blog>>> readBlog() async {
     try {
       if (!await (internetConnection.hasInternetAccess)) {
         final blogs = blogLocalDataSource.fetchBlogsLocally();
         return right(blogs);
       }
-      final blogs = await blogSupabaseDataSource.fetchBlogs();
+      final blogs = await blogSupabaseDataSource.readBlog();
       blogLocalDataSource.uploadBlogsLocally(blogs: blogs);
       return right(blogs);
     } on ServerExceptions catch (e) {
@@ -78,36 +78,29 @@ class BlogRepositoryImplementation implements BlogRepository {
 
   @override
   Future<Either<Failure, Blog>> updateBlog({
-    String? title,
     required String blogId,
-    // required BlogModel blogModel,
+    String? title,
+    String? content,
+    File? imageUrl,
+    List<String>? topics,
   }) async {
     try {
       if (!await (internetConnection.hasInternetAccess)) {
         return left(Failure(Constants.noInternetConnectionMessage));
       }
 
-      // BlogModel blogModel = BlogModel(
-      //   id: blogId,
-      //   posterId: 'posterId',
-      //   title: title!,
-      //   content: 'content',
-      //   imageUrl: '',
-      //   topics: [],
-      //   updatedAt: DateTime.now(),
-      // );
+      final uploadImageUrl = await blogSupabaseDataSource.updateBlogImage(
+        blogId: blogId,
+        image: imageUrl!,
+      );
 
-      // final imageUrl = await blogSupabaseDataSource.uploadBlogImage(
-      //   image: image,
-      //   blogModel: blogModel,
-      // );
-
-      // blogModel = blogModel.copyWith(imageUrl: imageUrl);
-
-      //  BlogModel model =  blogModel.copyWith(id: blogId, )
-
-      final uploadingBlog =
-          await blogSupabaseDataSource.updateBlog(title: title, blogId: blogId);
+      final uploadingBlog = await blogSupabaseDataSource.updateBlog(
+        blogId: blogId,
+        title: title,
+        content: content,
+        imageUrl: uploadImageUrl,
+        topics: topics,
+      );
 
       return right(uploadingBlog);
     } on ServerExceptions catch (e) {

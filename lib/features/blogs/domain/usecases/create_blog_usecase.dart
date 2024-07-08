@@ -6,13 +6,13 @@ import 'package:blogs_app/features/blogs/domain/entities/blog.dart';
 import 'package:blogs_app/features/blogs/domain/repositories/blog_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-class UploadBlog implements UseCase<Blog, UploadBlogParams> {
+class CreateBlogUsecase implements UseCase<Blog, CreateBlogParams> {
   final BlogRepository blogRepository;
-  UploadBlog(this.blogRepository);
+  CreateBlogUsecase(this.blogRepository);
 
   @override
-  Future<Either<Failure, Blog>> call(UploadBlogParams params) async {
-    return await blogRepository.uploadBlog(
+  Future<Either<Failure, Blog>> call(CreateBlogParams params) async {
+    return await blogRepository.createBlog(
       image: params.imageUrl,
       title: params.title,
       content: params.content,
@@ -22,14 +22,14 @@ class UploadBlog implements UseCase<Blog, UploadBlogParams> {
   }
 }
 
-class UploadBlogParams{
+class CreateBlogParams{
   final String posterId;
   final String title;
   final String content;
   final File imageUrl;
   final List<String> topics;
 
-  UploadBlogParams({
+  CreateBlogParams({
     required this.posterId,
     required this.title,
     required this.content,

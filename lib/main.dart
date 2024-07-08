@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Blogs Application using SOLID Principles and Clean Architecture',
-      theme: AppTheme.darkThemeMode,
+      theme: AppTheme.lightThemeMode,
       home: BlocSelector<AppUserCubit, AppUserState, bool>(
         selector: (state) {
           return state is AppUserLoggedIn;

@@ -1,5 +1,6 @@
 import 'package:blogs_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blogs_app/core/common/widgets/loader.dart';
+import 'package:blogs_app/core/theme/app_pallete.dart';
 import 'package:blogs_app/core/utils.dart';
 import 'package:blogs_app/features/auth/domain/usecases/current_user_usecase.dart';
 import 'package:blogs_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -22,7 +23,7 @@ class _BlogsPageState extends State<BlogsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<BlogBloc>().add(BlogsFetchEvent());
+    context.read<BlogBloc>().add(BlogReadEvent());
   }
 
   @override
@@ -68,10 +69,10 @@ class _BlogsPageState extends State<BlogsPage> {
           //   );
           // }
 
-          if (state is BlogFetchSuccess) {
+          if (state is BlogReadSuccess) {
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<BlogBloc>().add(BlogsFetchEvent());
+                context.read<BlogBloc>().add(BlogReadEvent());
               },
               child: ListView.builder(
                 itemCount: state.blogs.length,
@@ -84,8 +85,7 @@ class _BlogsPageState extends State<BlogsPage> {
                   return BlogCard(
                     userId: loggedInUserId,
                     blog: blogs,
-                    color: Colors.blue.shade400,
-                  ); // Text(blogs.title);
+                  );
                 },
               ),
             );

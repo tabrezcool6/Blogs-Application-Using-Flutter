@@ -14,9 +14,9 @@ import 'package:blogs_app/features/blogs/data/datasource/blog_supabase_data_sour
 import 'package:blogs_app/features/blogs/data/repository/blog_repository_impl.dart';
 import 'package:blogs_app/features/blogs/domain/repositories/blog_repository.dart';
 import 'package:blogs_app/features/blogs/domain/usecases/delete_blog_usecase.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/fetch_blogs_usecase.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/update_blogs_usecase.dart';
-import 'package:blogs_app/features/blogs/domain/usecases/upload_blog_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/read_blog_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/update_blog_usecase.dart';
+import 'package:blogs_app/features/blogs/domain/usecases/create_blog_usecase.dart';
 import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -146,28 +146,28 @@ void _initBlog() {
 
     // registering "UploadBlog" Dependency
     ..registerFactory(
-      () => UploadBlog(
+      () => CreateBlogUsecase(
         serviceLocator(),
       ),
     )
 
     // registering "FetchBlog" Dependency
     ..registerFactory(
-      () => FetchBlogs(
+      () => ReadBlogUsecase(
         serviceLocator(),
       ),
     )
 
     // registering "UploadBlog" Dependency
     ..registerFactory(
-      () => UpdateBlogs(
+      () => UpdateBlogUsecase(
         serviceLocator(),
       ),
     )
 
     // registering "Delete Blog" Dependency
     ..registerFactory(
-      () => DeleteBlog(
+      () => DeleteBlogUsecase(
         serviceLocator(),
       ),
     )
@@ -175,10 +175,10 @@ void _initBlog() {
     // registering "BlogBloc" Dependency
     ..registerLazySingleton(
       () => BlogBloc(
-        uploadBlog: serviceLocator(),
-        fetchBlogs: serviceLocator(),
-        updateBlogs: serviceLocator(),
-        deleteBlog: serviceLocator(),
+        createBlogUsecase: serviceLocator(),
+        readBlogUsecase: serviceLocator(),
+        updateBlogUsecase: serviceLocator(),
+        deleteBlogUsecase: serviceLocator(),
       ),
     );
 }

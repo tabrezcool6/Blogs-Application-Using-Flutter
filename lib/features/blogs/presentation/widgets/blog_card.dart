@@ -1,3 +1,4 @@
+import 'package:blogs_app/core/theme/app_pallete.dart';
 import 'package:blogs_app/core/utils.dart';
 import 'package:blogs_app/features/blogs/domain/entities/blog.dart';
 import 'package:blogs_app/features/blogs/presentation/pages/view_blog_page.dart';
@@ -6,20 +7,16 @@ import 'package:flutter/material.dart';
 class BlogCard extends StatelessWidget {
   final String userId;
   final Blog blog;
-  final Color color;
   const BlogCard({
     super.key,
     required this.userId,
     required this.blog,
-    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context, ViewBlogPage.route(userId, blog));
-      },
+      onTap: () => Navigator.push(context, ViewBlogPage.route(userId, blog)),
       child: Container(
         height: 200,
         margin: const EdgeInsets.all(16).copyWith(
@@ -27,7 +24,7 @@ class BlogCard extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: color,
+          color: AppPallete.cardColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -44,7 +41,17 @@ class BlogCard extends StatelessWidget {
                         .map(
                           (e) => Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Chip(label: Text(e)),
+                            child: Chip(
+                              label: Text(
+                                e,
+                                style: const TextStyle(
+                                  color: AppPallete.whiteColor,
+                                ),
+                              ),
+                              color: WidgetStatePropertyAll<Color>(
+                                AppPallete.chipColor,
+                              ),
+                            ),
                           ),
                         )
                         .toList(),
@@ -53,13 +60,19 @@ class BlogCard extends StatelessWidget {
                 Text(
                   blog.title,
                   style: const TextStyle(
+                    color: AppPallete.whiteColor,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
-            Text('${Utils.calculateReadTime(blog.content)} min'),
+            Text(
+              '${Utils.calculateReadTime(blog.content)} min',
+              style: const TextStyle(
+                color: AppPallete.whiteColor,
+              ),
+            ),
           ],
         ),
       ),

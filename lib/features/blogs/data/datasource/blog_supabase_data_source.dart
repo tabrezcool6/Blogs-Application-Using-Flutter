@@ -5,22 +5,35 @@ import 'package:blogs_app/features/blogs/data/model/blog_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class BlogSupabaseDataSource {
-  // Abstract method to upload blog to database
-  Future<BlogModel> uploadBlog(BlogModel blogModel);
+  // Abstract method to Create blog to database
+  Future<BlogModel> createBlog(BlogModel blogModel);
 
-  // abstract method to upload image to database
-  Future<String> uploadBlogImage({
-    required File image,
-    required BlogModel blogModel,
+  // abstract meethod to Read blog from database
+  Future<List<BlogModel>> readBlog();
+
+  // abstract meethod to Update blog from database
+  Future<BlogModel> updateBlog({
+    required String blogId,
+    String? title,
+    String? content,
+    String? imageUrl,
+    List<String>? topics,
   });
 
-  // abstract meethod to fetch blogs from database
-  Future<List<BlogModel>> fetchBlogs();
-
-  // abstract meethod to Update blogs from database
-  Future<BlogModel> updateBlog({String? title, required String blogId});
-
+  // abstract meethod to Delete blog from database
   Future<void> deleteBlog({required String blogId});
+
+  // abstract method to Upload image to database
+  Future<String> uploadBlogImage({
+    required File image,
+    required String blogId,
+  });
+
+  // abstract method to Update image to database
+  Future<String> updateBlogImage({
+    required blogId,
+    required File image,
+  });
 }
 
 // concrete Implementatiion of abstract
@@ -28,8 +41,9 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
   SupabaseClient supabaseClient;
   BlogSupabaseDataSourceImplementation(this.supabaseClient);
 
+  /// concrete Implementatiion of Creating a Blog to upload it to Server
   @override
-  Future<BlogModel> uploadBlog(BlogModel blogModel) async {
+  Future<BlogModel> createBlog(BlogModel blogModel) async {
     try {
       final blogData = await supabaseClient
           .from('blogs')
@@ -44,27 +58,9 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
     }
   }
 
+  /// concrete Implementatiion of Reading Blogs to display in thee application
   @override
-  Future<String> uploadBlogImage({
-    required File image,
-    required BlogModel blogModel,
-  }) async {
-    try {
-      await supabaseClient.storage
-          .from('blog_images')
-          .upload(blogModel.id, image);
-      return supabaseClient.storage
-          .from('blog_images')
-          .getPublicUrl(blogModel.id);
-    } on StorageException catch (e) {
-      throw ServerExceptions(e.message);
-    } catch (e) {
-      throw ServerExceptions(e.toString());
-    }
-  }
-
-  @override
-  Future<List<BlogModel>> fetchBlogs() async {
+  Future<List<BlogModel>> readBlog() async {
     try {
       final blogs =
           await supabaseClient.from('blogs').select('*, profiles (name)');
@@ -88,6 +84,37 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
     }
   }
 
+  /// concrete Implementatiion of Updating Blogs on the Server
+  @override
+  Future<BlogModel> updateBlog({
+    String? title,
+    String? content,
+    String? imageUrl,
+    List<String>? topics,
+    required String blogId,
+  }) async {
+    try {
+      final blogData = await supabaseClient
+          .from('blogs')
+          .update({
+            'title': title,
+            'content': content,
+            'topics': topics,
+            'image_url': imageUrl,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', blogId)
+          .select();
+
+      return BlogModel.fromJson(blogData.first);
+    } on PostgrestException catch (e) {
+      throw ServerExceptions(e.message);
+    } catch (e) {
+      throw ServerExceptions(e.toString());
+    }
+  }
+
+  /// concrete Implementatiion of Deleting Blogs from the Server
   @override
   Future<void> deleteBlog({required String blogId}) async {
     try {
@@ -99,23 +126,34 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
     }
   }
 
+  /// concrete Implementatiion of Uploading images to the Database
   @override
-  Future<BlogModel> updateBlog({
-    String? title,
+  Future<String> uploadBlogImage({
+    required File image,
     required String blogId,
   }) async {
     try {
-      print('///// id $blogId');
-      print('///// title $title');
+      await supabaseClient.storage.from('blog_images').upload(blogId, image);
 
-      final blogData = await supabaseClient
-          .from('blogs')
-          .update({'title': title})
-          .eq('id', blogId)
-          .select();
+      return supabaseClient.storage.from('blog_images').getPublicUrl(blogId);
+    } on StorageException catch (e) {
+      throw ServerExceptions(e.message);
+    } catch (e) {
+      throw ServerExceptions(e.toString());
+    }
+  }
 
-      return BlogModel.fromJson(blogData.first);
-    } on PostgrestException catch (e) {
+  /// concrete Implementatiion of Updating images in the Database
+  @override
+  Future<String> updateBlogImage({required blogId, required File image}) async {
+    try {
+      await supabaseClient.storage.from('blog_images').update(
+            blogId,
+            image,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+          );
+      return supabaseClient.storage.from('blog_images').getPublicUrl(blogId);
+    } on StorageException catch (e) {
       throw ServerExceptions(e.message);
     } catch (e) {
       throw ServerExceptions(e.toString());
