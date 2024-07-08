@@ -95,16 +95,14 @@ class ViewBlogPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    blog.imageUrl != null
-                        ? SizedBox(
-                            width: double.infinity,
-                            height: 300,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(blog.imageUrl),
-                            ),
-                          )
-                        : SizedBox(),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 300,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(blog.imageUrl),
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     Text(
                       blog.content,

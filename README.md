@@ -137,3 +137,8 @@ Also, feel free to write back for any corrections, suggestions, errors or any ot
 
 ## 4. Added C.R.U.D Operation in the application
 note: Please update the policies in the Supabase Database to make the functionalities work.
+
+## 5. App Screen Shots
+![screenshots](1 sign_in.png)
+% ![alt text](https://github.com/tabrezcool6/Blogs-Application-Using-Flutter/blob/[branch]/image.jpg?raw=true)
+
