@@ -139,6 +139,6 @@ Also, feel free to write back for any corrections, suggestions, errors or any ot
 note: Please update the policies in the Supabase Database to make the functionalities work.
 
 ## 5. App Screen Shots
-![screenshots](1 sign_in.png)
+![screenshots](1-sign_in.png)
 % ![alt text](https://github.com/tabrezcool6/Blogs-Application-Using-Flutter/blob/[branch]/image.jpg?raw=true)
 
