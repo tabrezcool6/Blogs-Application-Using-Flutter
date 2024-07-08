@@ -148,7 +148,10 @@ Solarized dark                           |  Solarized Ocean
 
 Solarized dark                           |  Solarized Ocean
 :-------------------------:              |:-------------------------:
-![alt text](<screenshots/1 sign_in.png>) |![alt text](<screenshots/2 sign_out.png>) 
+![alt text](<screenshots/3 homepage.png>) |![alt text](<screenshots/4 view_blog.png>) 
 
 
-% ![alt text](<screenshots/1 sign_in.png>) ![alt text](<screenshots/2 sign_out.png>) ![alt text](<screenshots/3 homepage.png>) ![alt text](<screenshots/4 view_blog.png>) ![alt text](<screenshots/5 new_blog.png>) ![alt text](<screenshots/6 edit_blog.png>)
+
+Solarized dark                           |  Solarized Ocean
+:-------------------------:              |:-------------------------:
+![alt text](<screenshots/5 new_blog.png>) |![alt text](<screenshots/6 edit_blog.png>) 
