@@ -155,3 +155,12 @@ Home Page                                 |  View Blog Details Page
 Create New Blog Page                      |  Edit Blog Page
 :-------------------------:               |:-------------------------:
 ![alt text](<screenshots/5 new_blog.png>) |![alt text](<screenshots/6 edit_blog.png>) 
+
+
+
+
+Create New Blog Page                      | 
+:-------------------------:               |:-------------------------:
+![text](screenshots/blog_app_demo.mov)    |
+
+

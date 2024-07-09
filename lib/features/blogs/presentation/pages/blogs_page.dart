@@ -34,6 +34,7 @@ class _BlogsPageState extends State<BlogsPage> {
         leading: IconButton(
           onPressed: () {
             context.read<AuthBloc>().add(AuthSignOut());
+            Utils.showSnackBar(context, 'Logged out Successfully');
 
             Navigator.pushAndRemoveUntil(
               context,
@@ -69,7 +70,8 @@ class _BlogsPageState extends State<BlogsPage> {
           }
 
           if (state is BlogReadSuccess) {
-            return RefreshIndicator(color: AppPallete.chipColor,
+            return RefreshIndicator(
+              color: AppPallete.chipColor,
               onRefresh: () async {
                 context.read<BlogBloc>().add(BlogReadEvent());
               },
