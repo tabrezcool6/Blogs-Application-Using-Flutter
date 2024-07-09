@@ -140,27 +140,13 @@ note: Please update the policies in the Supabase Database to make the functional
 
 ## 5. App Screen Shots
 
-Sign In Page                             |  Sign Up Page
-:-------------------------:              |:-------------------------:
-![alt text](<screenshots/1 sign_in.png>) |![alt text](<screenshots/2 sign_out.png>) 
+Sign In Page                             |  Sign Up Page                              |  Home Page     
+:-------------------------:              |:-------------------------:                 |:-------------------------: 
+![alt text](<screenshots/1 sign_in.png>) |![alt text](<screenshots/2 sign_out.png>)   |![alt text](<screenshots/3 homepage.png>) 
 
 
 
-Home Page                                 |  View Blog Details Page
-:-------------------------:               |:-------------------------:
-![alt text](<screenshots/3 homepage.png>) |![alt text](<screenshots/4 view_blog.png>) 
-
-
-
-Create New Blog Page                      |  Edit Blog Page
-:-------------------------:               |:-------------------------:
-![alt text](<screenshots/5 new_blog.png>) |![alt text](<screenshots/6 edit_blog.png>) 
-
-
-
-
-Create New Blog Page                      | 
-:-------------------------:               |:-------------------------:
-![text](screenshots/blog_app_demo.mov)    |
-
+View Blog Details Page                    |  Create New Blog Page                     | Edit Blog Page
+:-------------------------:               |:-------------------------:                |:-------------------------:
+![alt text](<screenshots/4 view_blog.png>)|![alt text](<screenshots/5 new_blog.png>)  |![alt text](<screenshots/6 edit_blog.png>) 
 
