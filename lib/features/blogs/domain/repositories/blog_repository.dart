@@ -16,6 +16,7 @@ abstract interface class BlogRepository {
   Future<Either<Failure, List<Blog>>> readBlog();
 
   Future<Either<Failure, Blog>> updateBlog({
+    required Blog blogData,
     required String blogId,
     String? title,
     String? content,

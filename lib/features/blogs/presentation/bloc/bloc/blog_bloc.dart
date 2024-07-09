@@ -81,9 +81,10 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
   ) async {
     final response = await _updateBlogUsecase(
       UpdateBlogParams(
+        blogData: event.blogData,
+        blogId: event.blogId,
         title: event.title,
         content: event.content,
-        blogId: event.blogId,
         topics: event.topics,
         imageUrl: event.imageUrl,
       ),

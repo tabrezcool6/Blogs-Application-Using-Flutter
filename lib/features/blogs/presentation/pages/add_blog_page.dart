@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddBlogPage extends StatefulWidget {
+  /// route function to navigate to this page,
+  /// requiring the blog object from the homepage, i.e the blogs page
   static route({blog}) => MaterialPageRoute(
         builder: (context) => AddBlogPage(blog: blog),
       );
@@ -49,80 +51,92 @@ class _AddBlogPageState extends State<AddBlogPage> {
     }
   }
 
+  /// checking permission in android, for iOS its default
   void selectImage() async {
     File? pickedImage;
+
+    /// Android method
     if (Platform.isAndroid) {
       final galleryPermission = await Permissions.getStoragePermission();
 
       if (galleryPermission) {
-        pickedImage = await Utils.pickImage();
-        if (pickedImage != null) {
-          setState(() {
-            image = pickedImage;
-          });
-        }
+        pickedImage = await onPickImage(pickedImage);
       } else {
         if (mounted) {
           Utils.showSnackBar(context, 'Storage permission required');
         }
       }
+
+      /// iOS method
     } else {
-      pickedImage = await Utils.pickImage();
-      if (pickedImage != null) {
-        setState(() {
-          image = pickedImage;
-        });
+      pickedImage = await onPickImage(pickedImage);
+    }
+  }
+
+  /// Image pick function and setting image to local image file variable to display
+  Future<File?> onPickImage(File? imageFile) async {
+    imageFile = await Utils.pickImage();
+    if (imageFile != null) {
+      setState(() {
+        image = imageFile;
+      });
+    }
+    return imageFile;
+  }
+
+  void uploadBlogOnTap() {
+    if (formKey.currentState!.validate()) {
+      if (image == null) {
+        Utils.showSnackBar(context, 'Image is required');
+      } else if (selectedTopics.isEmpty) {
+        Utils.showSnackBar(context, 'Atleast one topic must be selected');
+      } else {
+        final posterId =
+            (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
+
+        context.read<BlogBloc>().add(
+              BlogCreateEvent(
+                posterId: posterId,
+                title: titleController.text.trim(),
+                content: contentController.text.trim(),
+                imageUrl: image!,
+                topics: selectedTopics,
+              ),
+            );
       }
     }
   }
 
-  void uploadBlogOnTap() {
-    if (widget.blog == null) {
-      if (widget.blog == null) {
-        if (formKey.currentState!.validate()) {
-          if (image == null) {
-            Utils.showSnackBar(context, 'Image is required');
-          } else if (selectedTopics.isEmpty) {
-            Utils.showSnackBar(context, 'Atleast one topic must be selected');
-          } else {
-            final posterId =
-                (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id;
+  void updateBlogOnTap() async {
+    final String title = titleController.text.trim();
+    final String content = contentController.text.trim();
 
-            context.read<BlogBloc>().add(
-                  BlogCreateEvent(
-                    posterId: posterId,
-                    title: titleController.text.trim(),
-                    content: contentController.text.trim(),
-                    imageUrl: image!,
-                    topics: selectedTopics,
-                  ),
-                );
-          }
-        }
-      }
-    } else {
-      print('//// Update blog object \n$image');
-      // if (image == null) {
-      //   context.read<BlogBloc>().add(
-      //         BlogUpdateEvent(
-      //           title: titleController.text.trim(),
-      //           content: contentController.text.trim(),
-      //           blogId: widget.blog!.id,
-      //           topics: selectedTopics,
-      //           imageUrl: image!,
-      //         ),
-      //       );
-      // } else {
-      context.read<BlogBloc>().add(
-            BlogUpdateEvent(
-              title: titleController.text.trim(),
-              content: contentController.text.trim(),
-              blogId: widget.blog!.id,
-              topics: selectedTopics,
-            ),
-          );
-      // }
+    /// if none value is changed, just Navigating back to Home Screen without any API call
+    if (title == blogData!.title &&
+        content == blogData!.content &&
+        image == null &&
+        selectedTopics == blogData!.topics) {
+      Utils.showSnackBar(context, 'Blog updated successfully');
+      Navigator.pushAndRemoveUntil(
+        context,
+        BlogsPage.route(),
+        (route) => false,
+      );
+      return;
     }
+
+    /// esle making an API call with passing the changed values
+    context.read<BlogBloc>().add(
+          BlogUpdateEvent(
+            blogData: blogData!,
+            blogId: blogData!.id,
+            title: title,
+            content: content,
+            imageUrl: image,
+            topics: selectedTopics,
+          ),
+        );
+    // }
   }
 
   @override
@@ -140,7 +154,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: uploadBlogOnTap,
+            onPressed: blogData == null ? uploadBlogOnTap : updateBlogOnTap,
             icon: const Icon(Icons.done_rounded),
           ),
         ],

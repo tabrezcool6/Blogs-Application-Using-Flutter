@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BlogsPage extends StatefulWidget {
+  /// route function to navigate to this page,
   static route() => MaterialPageRoute(builder: (context) => const BlogsPage());
   const BlogsPage({super.key});
 

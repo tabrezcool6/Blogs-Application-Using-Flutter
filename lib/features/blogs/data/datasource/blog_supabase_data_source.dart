@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:blogs_app/core/error/exceptions.dart';
 import 'package:blogs_app/features/blogs/data/model/blog_model.dart';
+import 'package:blogs_app/features/blogs/domain/entities/blog.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class BlogSupabaseDataSource {
@@ -16,7 +17,7 @@ abstract interface class BlogSupabaseDataSource {
     required String blogId,
     String? title,
     String? content,
-    // String? imageUrl,
+    String? imageUrl,
     List<String>? topics,
   });
 
@@ -89,7 +90,7 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
   Future<BlogModel> updateBlog({
     String? title,
     String? content,
-    // String? imageUrl,
+    String? imageUrl,
     List<String>? topics,
     required String blogId,
   }) async {
@@ -100,7 +101,7 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
             'title': title,
             'content': content,
             'topics': topics,
-            // 'image_url': imageUrl,
+            'image_url': imageUrl,
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('id', blogId)

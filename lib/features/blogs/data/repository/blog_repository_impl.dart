@@ -78,6 +78,7 @@ class BlogRepositoryImplementation implements BlogRepository {
 
   @override
   Future<Either<Failure, Blog>> updateBlog({
+    required Blog blogData,
     required String blogId,
     String? title,
     String? content,
@@ -89,17 +90,18 @@ class BlogRepositoryImplementation implements BlogRepository {
         return left(Failure(Constants.noInternetConnectionMessage));
       }
 
-      // final uploadImageUrl = await blogSupabaseDataSource.updateBlogImage(
-      //   blogId: blogId,
-      //   image: imageUrl!,
-      // );
-
+      final uploadImageUrl = imageUrl != null
+          ? await blogSupabaseDataSource.updateBlogImage(
+              blogId: blogId,
+              image: imageUrl,
+            )
+          : blogData.imageUrl;
 
       final uploadingBlog = await blogSupabaseDataSource.updateBlog(
         blogId: blogId,
         title: title,
         content: content,
-        // imageUrl: uploadImageUrl,
+        imageUrl: uploadImageUrl,
         topics: topics,
       );
 

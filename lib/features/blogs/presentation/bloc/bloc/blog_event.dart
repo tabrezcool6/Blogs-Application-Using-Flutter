@@ -24,12 +24,14 @@ final class BlogReadEvent extends BlogEvent {}
 // Event to update the existing blog, since all paramneters are not mandatory they are nullable
 final class BlogUpdateEvent extends BlogEvent {
   final String blogId;
+  final Blog blogData;
   String? title;
   String? content;
   File? imageUrl;
   List<String>? topics;
 
   BlogUpdateEvent({
+    required this.blogData,
     required this.blogId,
     this.title,
     this.content,
