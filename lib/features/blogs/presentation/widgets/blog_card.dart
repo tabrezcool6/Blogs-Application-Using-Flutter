@@ -18,13 +18,21 @@ class BlogCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(context, ViewBlogPage.route(userId, blog)),
       child: Container(
-        height: 200,
+        height: 180,
         margin: const EdgeInsets.all(16).copyWith(
           bottom: 4,
         ),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppPallete.cardColor,
+          gradient: const LinearGradient(
+            colors: [
+              AppPallete.gradient1,
+              AppPallete.gradient2,
+            ],
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+          ),
+          // color: AppPallete.cardColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -41,17 +49,7 @@ class BlogCard extends StatelessWidget {
                         .map(
                           (e) => Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Chip(
-                              label: Text(
-                                e,
-                                style: const TextStyle(
-                                  color: AppPallete.whiteColor,
-                                ),
-                              ),
-                              color: MaterialStatePropertyAll<Color>(
-                                AppPallete.chipColor,
-                              ),
-                            ),
+                            child: Chip(label: Text(e)),
                           ),
                         )
                         .toList(),

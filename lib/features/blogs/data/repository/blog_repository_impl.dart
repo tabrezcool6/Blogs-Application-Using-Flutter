@@ -89,16 +89,17 @@ class BlogRepositoryImplementation implements BlogRepository {
         return left(Failure(Constants.noInternetConnectionMessage));
       }
 
-      final uploadImageUrl = await blogSupabaseDataSource.updateBlogImage(
-        blogId: blogId,
-        image: imageUrl!,
-      );
+      // final uploadImageUrl = await blogSupabaseDataSource.updateBlogImage(
+      //   blogId: blogId,
+      //   image: imageUrl!,
+      // );
+
 
       final uploadingBlog = await blogSupabaseDataSource.updateBlog(
         blogId: blogId,
         title: title,
         content: content,
-        imageUrl: uploadImageUrl,
+        // imageUrl: uploadImageUrl,
         topics: topics,
       );
 

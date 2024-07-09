@@ -10,6 +10,10 @@ import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+final Shader textGradient = const LinearGradient(
+  colors: <Color>[AppPallete.gradient1, AppPallete.gradient2],
+).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+
 class SignInPage extends StatefulWidget {
   static route() => MaterialPageRoute(
         builder: (context) => const SignInPage(),
@@ -45,6 +49,10 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Shader textGradient = const LinearGradient(
+      colors: <Color>[AppPallete.gradient1, AppPallete.gradient2],
+    ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -69,11 +77,12 @@ class _SignInPageState extends State<SignInPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Sign In.',
                     style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
+                      foreground: Paint()..shader = textGradient,
                     ),
                   ),
                   const SizedBox(height: 30),

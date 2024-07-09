@@ -7,6 +7,7 @@ import 'package:blogs_app/features/auth/presentation/widgets/auth_field.dart';
 import 'package:blogs_app/features/auth/presentation/widgets/auth_gradient_button.dart';
 import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -61,11 +62,12 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Sign Up.',
                     style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
+                      foreground: Paint()..shader = textGradient,
                     ),
                   ),
                   const SizedBox(height: 30),

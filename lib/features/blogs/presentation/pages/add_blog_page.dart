@@ -101,15 +101,27 @@ class _AddBlogPageState extends State<AddBlogPage> {
         }
       }
     } else {
+      print('//// Update blog object \n$image');
+      // if (image == null) {
+      //   context.read<BlogBloc>().add(
+      //         BlogUpdateEvent(
+      //           title: titleController.text.trim(),
+      //           content: contentController.text.trim(),
+      //           blogId: widget.blog!.id,
+      //           topics: selectedTopics,
+      //           imageUrl: image!,
+      //         ),
+      //       );
+      // } else {
       context.read<BlogBloc>().add(
             BlogUpdateEvent(
               title: titleController.text.trim(),
               content: contentController.text.trim(),
               blogId: widget.blog!.id,
               topics: selectedTopics,
-              imageUrl: image,
             ),
           );
+      // }
     }
   }
 
@@ -261,25 +273,46 @@ class _AddBlogPageState extends State<AddBlogPage> {
                                     }
                                     setState(() {});
                                   },
-                                  child: Chip(
-                                    label: Text(
-                                      e,
-                                      style: TextStyle(
-                                        color: selectedTopics.contains(e)
-                                            ? AppPallete.whiteColor
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        gradient: selectedTopics.contains(e)
+                                            ? const LinearGradient(
+                                                colors: [
+                                                  AppPallete.gradient1,
+                                                  AppPallete.gradient2,
+                                                ],
+                                                begin: Alignment.bottomLeft,
+                                                end: Alignment.topRight,
+                                              )
                                             : null,
+                                        // color: AppPallete.cardColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: !selectedTopics.contains(e)
+                                            ? Border.all(
+                                                color: AppPallete.borderColor)
+                                            : null),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0)
+                                          .copyWith(top: 5, bottom: 5),
+                                      child: Text(
+                                        e,
+                                        style: TextStyle(
+                                          color: selectedTopics.contains(e)
+                                              ? AppPallete.whiteColor
+                                              : null,
+                                        ),
                                       ),
                                     ),
-                                    color: selectedTopics.contains(e)
-                                        ? MaterialStatePropertyAll(
-                                            AppPallete.chipColor,
-                                          )
-                                        : null,
-                                    side: selectedTopics.contains(e)
-                                        ? null
-                                        : const BorderSide(
-                                            color: AppPallete.borderColor,
-                                          ),
+                                    // color: selectedTopics.contains(e)
+                                    //     ? MaterialStatePropertyAll(
+                                    //         AppPallete.gradient2,
+                                    //       )
+                                    //     : null,
+                                    // side: selectedTopics.contains(e)
+                                    //     ? null
+                                    //     : const BorderSide(
+                                    //         color: AppPallete.borderColor,
+                                    //       ),
                                   ),
                                 ),
                               ),
