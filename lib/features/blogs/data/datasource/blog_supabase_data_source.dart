@@ -151,9 +151,10 @@ class BlogSupabaseDataSourceImplementation extends BlogSupabaseDataSource {
       await supabaseClient.storage.from('blog_images').update(
             blogId,
             image,
-            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
           );
-      return supabaseClient.storage.from('blog_images').getPublicUrl(blogId);
+      final date = DateTime.now();
+      return '${supabaseClient.storage.from('blog_images').getPublicUrl(blogId)}?bust=$date';
     } on StorageException catch (e) {
       throw ServerExceptions(e.message);
     } catch (e) {

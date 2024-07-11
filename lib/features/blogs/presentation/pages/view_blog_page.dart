@@ -22,7 +22,6 @@ class ViewBlogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('////// print image url: ${blog.imageUrl}');
     return Scaffold(
         appBar: AppBar(
           actions: [
