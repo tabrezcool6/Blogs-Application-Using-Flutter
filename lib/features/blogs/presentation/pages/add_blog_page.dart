@@ -11,6 +11,7 @@ import 'package:blogs_app/features/blogs/presentation/bloc/bloc/blog_bloc.dart';
 import 'package:blogs_app/features/blogs/presentation/pages/blogs_page.dart';
 import 'package:blogs_app/features/blogs/presentation/widgets/blog_field.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,16 +39,15 @@ class _AddBlogPageState extends State<AddBlogPage> {
 
   @override
   void initState() {
-    super.initState();
-
     /// initializing Blog Data values to the local varibales in page
-    final blogDataa = widget.blog;
-    if (blogDataa != null) {
-      blogData = blogDataa;
-      titleController = TextEditingController(text: blogDataa.title);
-      contentController = TextEditingController(text: blogDataa.content);
+    if (widget.blog != null) {
+      blogData = widget.blog;
+      titleController = TextEditingController(text: widget.blog!.title);
+      contentController = TextEditingController(text: widget.blog!.content);
 
-      selectedTopics = blogDataa.topics;
+      selectedTopics.addAll(widget.blog!.topics);
+
+      super.initState();
     }
   }
 
@@ -85,6 +85,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
   }
 
   void uploadBlogOnTap() {
+    print('///// upload');
     if (formKey.currentState!.validate()) {
       if (image == null) {
         Utils.showSnackBar(context, 'Image is required');
@@ -108,14 +109,17 @@ class _AddBlogPageState extends State<AddBlogPage> {
   }
 
   void updateBlogOnTap() async {
+    print('///// update');
+
     final String title = titleController.text.trim();
     final String content = contentController.text.trim();
 
-    /// if none value is changed, just Navigating back to Home Screen without any API call
+    /// if none value is changed,
+    ///  just Navigating back to Home Screen without any API call
     if (title == blogData!.title &&
         content == blogData!.content &&
         image == null &&
-        selectedTopics == blogData!.topics) {
+        listEquals(selectedTopics, blogData!.topics)) {
       Utils.showSnackBar(context, 'Blog updated successfully');
       Navigator.pushAndRemoveUntil(
         context,
@@ -125,18 +129,27 @@ class _AddBlogPageState extends State<AddBlogPage> {
       return;
     }
 
-    /// esle making an API call with passing the changed values
-    context.read<BlogBloc>().add(
-          BlogUpdateEvent(
-            blogData: blogData!,
-            blogId: blogData!.id,
-            title: title,
-            content: content,
-            imageUrl: image,
-            topics: selectedTopics,
-          ),
-        );
-    // }
+    /// Else validating the data
+    if (formKey.currentState!.validate()) {
+      if (selectedTopics.isEmpty) {
+        Utils.showSnackBar(context, 'Atleast one topic must be selected');
+      } else {
+        final String title = titleController.text.trim();
+        final String content = contentController.text.trim();
+
+        /// esle making an API call with passing the changed values
+        context.read<BlogBloc>().add(
+              BlogUpdateEvent(
+                blogData: blogData!,
+                blogId: blogData!.id,
+                title: title,
+                content: content,
+                imageUrl: image,
+                topics: selectedTopics,
+              ),
+            );
+      }
+    }
   }
 
   @override
@@ -285,6 +298,7 @@ class _AddBlogPageState extends State<AddBlogPage> {
                                     } else {
                                       selectedTopics.add(e);
                                     }
+
                                     setState(() {});
                                   },
                                   child: Container(
@@ -317,16 +331,6 @@ class _AddBlogPageState extends State<AddBlogPage> {
                                         ),
                                       ),
                                     ),
-                                    // color: selectedTopics.contains(e)
-                                    //     ? MaterialStatePropertyAll(
-                                    //         AppPallete.gradient2,
-                                    //       )
-                                    //     : null,
-                                    // side: selectedTopics.contains(e)
-                                    //     ? null
-                                    //     : const BorderSide(
-                                    //         color: AppPallete.borderColor,
-                                    //       ),
                                   ),
                                 ),
                               ),
@@ -356,14 +360,6 @@ class _AddBlogPageState extends State<AddBlogPage> {
     );
   }
 }
-
-
-
-
-
-
-
-
 
 /*
 

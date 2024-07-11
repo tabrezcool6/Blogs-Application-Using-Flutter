@@ -17,9 +17,7 @@ class AppTheme {
       backgroundColor: AppPallete.backgroundColor,
     ),
     chipTheme: const ChipThemeData(
-      color: MaterialStatePropertyAll(
-        AppPallete.backgroundColor,
-      ),
+      color: WidgetStatePropertyAll(AppPallete.backgroundColor),
       side: BorderSide.none,
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -37,9 +35,7 @@ class AppTheme {
       backgroundColor: AppPallete.backgroundColor,
     ),
     chipTheme: const ChipThemeData(
-      color: MaterialStatePropertyAll(
-        AppPallete.backgroundColor,
-      ),
+      color: WidgetStatePropertyAll(AppPallete.backgroundColor),
       side: BorderSide.none,
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -49,9 +45,7 @@ class AppTheme {
       focusedBorder: _border(AppPallete.gradient2),
       errorBorder: _border(AppPallete.errorColor),
     ),
-    progressIndicatorTheme:
-        ProgressIndicatorThemeData(color: AppPallete.chipColor),
-    indicatorColor: AppPallete.chipColor,
-    
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: AppPallete.blue),
+    indicatorColor: AppPallete.blue,
   );
 }

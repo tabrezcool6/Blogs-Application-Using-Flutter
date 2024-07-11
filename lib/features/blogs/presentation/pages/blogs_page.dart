@@ -33,16 +33,21 @@ class _BlogsPageState extends State<BlogsPage> {
         title: const Text('Blogs'),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () {
-            context.read<AuthBloc>().add(AuthSignOut());
-            Utils.showSnackBar(context, 'Logged out Successfully');
+          onPressed: () => Utils.singleBtnPopAlertDialogBox(
+            context: context,
+            title: 'Confirm Log Out?',
+            desc: '',
+            onTap1: () {
+              context.read<AuthBloc>().add(AuthSignOut());
+              Utils.showSnackBar(context, 'Logged out Successfully');
 
-            Navigator.pushAndRemoveUntil(
-              context,
-              SignInPage.route(),
-              (route) => false,
-            );
-          },
+              Navigator.pushAndRemoveUntil(
+                context,
+                SignInPage.route(),
+                (route) => false,
+              );
+            },
+          ),
           icon: const Icon(Icons.logout_rounded),
         ),
         actions: [
@@ -72,7 +77,7 @@ class _BlogsPageState extends State<BlogsPage> {
 
           if (state is BlogReadSuccess) {
             return RefreshIndicator(
-              color: AppPallete.chipColor,
+              color: AppPallete.blue,
               onRefresh: () async {
                 context.read<BlogBloc>().add(BlogReadEvent());
               },

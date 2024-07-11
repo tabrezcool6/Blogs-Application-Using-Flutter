@@ -76,13 +76,6 @@ class BlogRepositoryImplementation implements BlogRepository {
     }
   }
 
-/// I/flutter ( 5608): ////// print image url: https://qodpzijhkchsxpdoytzk.supabase.co/storage/v1/object/public/blog_images/d0b1d500-f9b8-107c-8340-850a9d1becb2
-/// I/flutter ( 5608): ////// print image url: https://qodpzijhkchsxpdoytzk.supabase.co/storage/v1/object/public/blog_images/d0b1d500-f9b8-107c-8340-850a9d1becb2
-/// I/flutter ( 5608): ////// print image url: https://qodpzijhkchsxpdoytzk.supabase.co/storage/v1/object/public/blog_images/d0b1d500-f9b8-107c-8340-850a9d1becb2@2024-07-11 12:30:19.347520
-/// I/flutter ( 5608): ////// print image url: https://qodpzijhkchsxpdoytzk.supabase.co/storage/v1/object/public/blog_images/a99b78a0-ffe8-107c-8561-f943055cdcf4@2024-07-11 12:46:07.736533
-
-
-
   @override
   Future<Either<Failure, Blog>> updateBlog({
     required Blog blogData,
@@ -104,7 +97,6 @@ class BlogRepositoryImplementation implements BlogRepository {
             )
           : blogData.imageUrl;
 
-      print('////// print image url: $uploadImageUrl');
 
       final uploadingBlog = await blogSupabaseDataSource.updateBlog(
         blogId: blogId,

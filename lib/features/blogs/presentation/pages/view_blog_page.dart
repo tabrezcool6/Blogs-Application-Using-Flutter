@@ -40,13 +40,15 @@ class ViewBlogPage extends StatelessWidget {
             /// Delete Blog Icon Button
             userId == blog.posterId
                 ? IconButton(
-                    onPressed: () {
-                      print('//// User id $userId \nblog id ${blog.id}');
-
-                      context
-                          .read<BlogBloc>()
-                          .add(BlogDeleteEvent(blogId: blog.id));
-                    },
+                    onPressed: () => Utils.singleBtnPopAlertDialogBox(
+                          context: context,
+                          title: 'Confirm delete?',
+                          desc: '',
+                          onTap1: () => context
+                              .read<BlogBloc>()
+                              .add(BlogDeleteEvent(blogId: blog.id)),
+                        ),
+                    // },
                     icon: const Icon(Icons.delete))
                 : const SizedBox(),
           ],
